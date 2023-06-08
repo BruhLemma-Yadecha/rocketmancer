@@ -1,7 +1,9 @@
 #include <iostream>
-#include <cmath>
+#include <random>
 #include <cstdlib>
+#include <ctime>
 #include <limits>
+typedef std::numeric_limits<double> dbl;
 
 #define g 9.80665
 
@@ -77,7 +79,7 @@ int main()
         }
 
         // Print invalids
-        std::cout.precision(std::numeric_limits<double>::max_digits10 + 2);
+        std::cout.precision(dbl::max_digits10 + 2);
         std::cout << "Current mass is " << total_mass << std::endl;
         std::cout << "Can't increase dv0: " << mass_if_dv0_went_up << std::endl;
         std::cout << "Can't increase dv1: " << mass_if_dv1_went_up << std::endl;
