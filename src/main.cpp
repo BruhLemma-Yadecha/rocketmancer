@@ -5,6 +5,7 @@
 #include <vector>
 
 #define g 9.80665
+#define STEP 1.0
 #define MASS_MAX 1.79769313486231570e+308;
 
 using std::cout;
@@ -17,17 +18,17 @@ class Rocket
     unsigned short stages;
     const double *specific_impulse;
     const double *mass_fraction;
+    double payload;
 
     // Constructor populated fields
     double *delta_v;
     double *mass;
-    double total_mass = 1.79769313486231570e+308;
-    double payload;
 
     // Some middlemen functions
-    double repopulate_total_mass();
+    void repopulate_total_mass();
+    void build_rocket(double step);
     double calculate_stage_mass(double dV, double payload, double fraction, double isp);
-    
+    double total_mass = 1.79769313486231570e+308;
 
 public:
     Rocket(unsigned short number_of_stages, double total_delta_v, const double *per_stage_specific_impulse, const double *per_stage_mass_fraction, double payload_mass)
@@ -49,14 +50,16 @@ public:
         double temp_mass[stages];
         mass = temp_mass;
 
-        build_rocket(1.0);
+        build_rocket(STEP);
     }
-
-    double rocket_mass();
-    double total_delta_v();
     void print_report();
-    void build_rocket(double step);
+    void report();
 };
+
+void Rocket::report()
+{
+    print_report();
+}
 
 double Rocket::calculate_stage_mass(double dV, double payload, double fraction, double isp)
 {
@@ -95,31 +98,20 @@ void Rocket::build_rocket(double step)
                 }
             }
 
-            for (int k = 0; k < stages; k++)
-            {
-                cout << "Local V: " << local_delta_v[k] << endl;
-            }
-            cout << endl;
-
             // Builds the actual rocket
             double mass_so_far = payload;
             for(int j = stages - 1; j >= 0; j--)
             {
-                cout << "Mass " << j << ": " << mass_so_far << endl;
                 double current_stage_mass = calculate_stage_mass(local_delta_v[j], mass_so_far, mass_fraction[j], specific_impulse[j]);
                 mass_so_far += current_stage_mass;
                 mass[j] = current_stage_mass;
-                cout << "Stage " << j << " mass: " << current_stage_mass << endl;
             }
 
             // Check if this configuration should be kept.
             
             if (mass_so_far < total_mass)
             {
-                for (int i = 0; i < stages; i++)
-                {
-                    delta_v[i] = local_delta_v[i];
-                }
+                delta_v = local_delta_v;
                 if (mass_so_far > 0)
                 {
                     mass = local_mass;
@@ -152,30 +144,28 @@ void Rocket::build_rocket(double step)
         }
     }
     print_report();
+    return;
 }
 
-double Rocket::repopulate_total_mass()
+void Rocket::repopulate_total_mass()
 {
-    cout << total_mass <<"->";
     double result = 0;
     for(int i = 0; i < stages; i++)
     {
         result += mass[i];
     }
     total_mass = result + payload;
-    cout << result << endl;
 }
 
 void Rocket::print_report()
 {
-    std::cout << "Ideal Rocket Found!\n" << "Mass: " << total_mass << std::endl;
-    for(int i = stages; i >= 0; i--)
+    cout << "-------REPORT-------\n";
+    cout << "Total Mass: " << total_mass << endl;
+    for(int i = 0; i < stages; i++)
     {
-        std::cout << "Stage " << i << ": " << mass[i] << std::endl;
-    }
-    for (int i = stages; i > 0; i--)
-    {
-        std::cout << "Delta-V " << i << ": " << delta_v[i] << std::endl;
+        cout << "-------STAGE " << i + 1 << "------\n";
+        cout << "Delta-V: " << delta_v[i] << endl;
+        cout << "Stage Mass: " << mass[i] << endl;
     }
 }
 
@@ -194,6 +184,6 @@ int main()
 
     // Build actual object
     Rocket rocket0(stages, total_dv, isp, mass_fraction, payload);
-    //rocket0.build_rocket(step);
-    
+    cout << endl;
+    rocket0.report();
 }
