@@ -22,20 +22,61 @@ With rocketmancer-web, I wanted to fix the primary issue of both of those legacy
 ## Concept
 The backbone of rocketmancer is the Tsiolkovsky Rocket Equation (see [here](https://en.wikipedia.org/wiki/Tsiolkovsky_rocket_equation)). The parameters that are often at hand when planning a mission and designing a vehicle are total delta-v, stage specific impulse values, and achievable ranges for the propellant mass fraction. The formula is trivial for a single stage vehicle and vehicles with stages that have the same mass fraction and specific impulse, but requires finding the optimal split when each stage performs differently. This is the primary optimization task rocketmancer does.
 
-## Usage
-⚠️This section is under construction! Some features are WIP and the project may have non-functional sections in its current state!⚠️
-![image](https://github.com/user-attachments/assets/a7c1f863-0bd5-4ee3-8dff-8cb5330ba3ef)
-The backend contains the optimization API under /optimize/.
+## Quick Start
 
-⚠️This feature is currently being refactored to reflect new changes⚠️
+### Using Docker (Recommended)
 
-To use the site, build the image and start the container:
+1. **Clone and setup**
+   ```bash
+   git clone <repository-url>
+   cd rocketmancer-web
+   cp .env.example .env
+   ```
+
+2. **Start the application**
+   ```bash
+   make dev
+   # or
+   docker-compose up --build
+   ```
+
+3. **Access the application**
+   - Frontend: http://localhost
+   - Backend API: http://localhost:8000
+   - Admin Panel: http://localhost:8000/admin
+
+### Development Commands
+
+```bash
+make help          # Show available commands
+make build         # Build containers
+make up            # Start services
+make down          # Stop services
+make test          # Run tests
+make lint          # Run linting
+make clean         # Clean up
 ```
-docker-compose up --build
-```
-This will launch a simple SPA on port 80 with a form where you can submit the two parameters for each stage. The site automatically loads a sample configuration, but you can tweak it and see the optimized result displayed in the top section.
 
-This works on port 80 by default, but can be configured to run on a different port.
+## Project Structure
+
+```
+rocketmancer-web/
+├── backend/                 # Django REST API
+│   ├── rocketmancer/       # Django project settings
+│   ├── optimizer/          # Rocket optimization logic
+│   ├── requirements/       # Python dependencies
+│   └── tests/             # Backend tests
+├── frontend/               # React SPA
+│   ├── src/
+│   │   ├── components/    # React components
+│   │   ├── services/      # API integration
+│   │   ├── hooks/         # Custom React hooks
+│   │   └── utils/         # Utility functions
+│   └── tests/             # Frontend tests
+├── nginx/                  # Reverse proxy config
+├── docs/                   # Documentation
+└── Makefile               # Development commands
+```
 
 ## License
 
