@@ -21,5 +21,6 @@ from optimizer.views import optimize
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('optimize/', optimize),
+    path('optimize/', optimize, name='optimize'),
+    path('api/v1/optimize/', optimize, name='api_optimize'),
 ]
