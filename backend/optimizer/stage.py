@@ -1,15 +1,16 @@
 from math import exp
+from typing import Any
 
 from scipy.constants import g
 
 
 class Stage:
-    def __init__(self, stage, specific_impulse, propellant_mass_fraction):
+    def __init__(self, stage: int, specific_impulse: float, propellant_mass_fraction: float) -> None:
         self.stage = stage
         self.specific_impulse = specific_impulse
         self.propellant_mass_fraction = propellant_mass_fraction
 
-    def build(self, payload_mass, delta_v):
+    def build(self, payload_mass: float, delta_v: float) -> None:
         self.payload_mass = payload_mass
         self.delta_v = delta_v
         self.stage_mass = (self.payload_mass * (1 - self.mass_ratio)) / (
@@ -17,30 +18,30 @@ class Stage:
         )
 
     @property
-    def wet_mass(self):
+    def wet_mass(self) -> float:
         return self.stage_mass + self.payload_mass
 
     @property
-    def dry_mass(self):
+    def dry_mass(self) -> float:
         return self.stage_mass * (1 - self.propellant_mass_fraction) + self.payload_mass
 
     @property
-    def structural_mass(self):
+    def structural_mass(self) -> float:
         return self.stage_mass * (1 - self.propellant_mass_fraction)
 
     @property
-    def propellant_mass(self):
+    def propellant_mass(self) -> float:
         return self.stage_mass * self.propellant_mass_fraction
 
     @property
-    def exhaust_velocity(self):
-        return self.specific_impulse * g
+    def exhaust_velocity(self) -> float:
+        return float(self.specific_impulse * g)
 
     @property
-    def mass_ratio(self):
+    def mass_ratio(self) -> float:
         return exp(self.delta_v / (self.exhaust_velocity))
 
-    def to_json(self):
+    def to_json(self) -> dict[str, Any]:
         return {
             "stage": self.stage,
             "specificImpulse": self.specific_impulse,
