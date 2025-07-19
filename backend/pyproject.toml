@@ -1,9 +1,12 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["rocketmancer", "optimizer"]
 
 [project]
-name = "rocketmancer-web"
+name = "rocketmancer"
 version = "1.0.0"
 description = "Multi-stage rocket delta-V optimizer web application"
 readme = "../README.md"
@@ -33,15 +36,16 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "black>=23.9.0",
-    "flake8>=6.1.0",
-    "isort>=5.12.0",
+    "ruff>=0.6.0",
+    "mypy>=1.11.0",
     "pytest>=7.4.0",
     "pytest-django>=4.5.0",
     "pytest-cov>=4.1.0",
     "factory-boy>=3.3.0",
     "django-debug-toolbar>=4.2.0",
     "django-extensions>=3.2.0",
+    "django-stubs>=5.1.0",
+    "types-requests>=2.31.0",
 ]
 prod = [
     "psycopg2-binary>=2.9.0",
@@ -57,43 +61,97 @@ Repository = "https://github.com/your-username/rocketmancer-web"
 Documentation = "https://github.com/your-username/rocketmancer-web/docs"
 "Bug Tracker" = "https://github.com/your-username/rocketmancer-web/issues"
 
-[tool.black]
+# Remove invalid scripts section - Django management commands should be run directly
+
+[tool.uv]
+dev-dependencies = [
+    "ruff>=0.6.0",
+    "mypy>=1.11.0",
+    "pytest>=7.4.0",
+    "pytest-django>=4.5.0",
+    "pytest-cov>=4.1.0",
+    "factory-boy>=3.3.0",
+    "django-debug-toolbar>=4.2.0",
+    "django-extensions>=3.2.0",
+    "django-stubs>=5.1.0",
+    "types-requests>=2.31.0",
+]
+
+# Ruff configuration - replaces black, isort, and flake8
+[tool.ruff]
+target-version = "py311"
 line-length = 88
-target-version = ['py311']
-include = '\.pyi?$'
-extend-exclude = '''
-/(
-  # directories
-  \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | build
-  | dist
-  | migrations
-)/
-'''
-
-[tool.isort]
-profile = "black"
-multi_line_output = 3
-line_length = 88
-known_django = "django"
-sections = ["FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
-
-[tool.flake8]
-max-line-length = 88
-extend-ignore = ["E203", "W503"]
-exclude = [
-    ".git",
-    "__pycache__",
+extend-exclude = [
     "migrations",
     ".venv",
     "build",
-    "dist"
+    "dist",
+    "__pycache__",
 ]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "DJ",  # flake8-django
+    "UP",  # pyupgrade
+    "RUF", # ruff-specific rules
+]
+ignore = [
+    "E203", # whitespace before ':'
+    "E501", # line too long (handled by formatter)
+    "B008", # do not perform function calls in argument defaults
+    "DJ001", # avoid using null=True on string-based fields
+]
+
+[tool.ruff.lint.per-file-ignores]
+"*/settings/*.py" = ["F403", "F405"]  # Allow star imports in Django settings
+"*/settings/__init__.py" = ["F403", "F405"]  # Allow star imports in Django settings
+
+[tool.ruff.lint.isort]
+known-third-party = ["django"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+# MyPy configuration for strict type checking
+[tool.mypy]
+python_version = "3.11"
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+no_implicit_optional = true
+no_implicit_reexport = true
+show_error_codes = true
+strict_equality = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = [
+    "*.migrations.*",
+    "manage",
+    "*/settings/*",
+]
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "rocketmancer.settings.testing"
