@@ -29,19 +29,19 @@ help:
 
 # Docker commands
 build:
-	docker-compose build
+	docker compose build
 
 up:
-	docker-compose up -d
+	docker compose up -d
 
 down:
-	docker-compose down
+	docker compose down
 
 logs:
-	docker-compose logs -f
+	docker compose logs -f
 
 clean:
-	docker-compose down -v --remove-orphans
+	docker compose down -v --remove-orphans
 	docker system prune -f
 
 # Development
@@ -51,14 +51,14 @@ dev:
 		echo "Creating .env from .env.example..."; \
 		cp .env.example .env; \
 	fi
-	docker-compose up --build
+	docker compose up --build
 
 # Testing
 test:
 	@echo "Running backend tests..."
-	docker-compose exec backend python manage.py test
+	docker compose exec backend python manage.py test
 	@echo "Running frontend tests..."
-	docker-compose exec frontend npm test
+	docker compose exec frontend npm test
 
 # Code quality
 lint:
@@ -67,13 +67,13 @@ lint:
 	@echo "Type checking backend with mypy..."
 	cd backend && uv run mypy .
 	@echo "Linting frontend..."
-	docker-compose exec frontend npm run lint
+	docker compose exec frontend npm run lint
 
 format:
 	@echo "Formatting backend code with ruff..."
 	cd backend && uv run ruff format .
 	@echo "Formatting frontend code..."
-	docker-compose exec frontend npm run format
+	docker compose exec frontend npm run format
 
 # Backend development commands using uv
 lint-backend:
@@ -110,10 +110,10 @@ sync-backend:
 
 # Database
 migrate:
-	docker-compose exec backend python manage.py migrate
+	docker compose exec backend python manage.py migrate
 
 makemigrations:
-	docker-compose exec backend python manage.py makemigrations
+	docker compose exec backend python manage.py makemigrations
 
 # Backend database commands using uv
 migrate-backend:
@@ -134,13 +134,13 @@ collectstatic-backend:
 
 # Utility
 shell-backend:
-	docker-compose exec backend python manage.py shell
+	docker compose exec backend python manage.py shell
 
 shell-frontend:
-	docker-compose exec frontend sh
+	docker compose exec frontend sh
 
 install-deps:
 	@echo "Installing backend dependencies with uv..."
 	cd backend && uv sync
 	@echo "Installing frontend dependencies..."
-	docker-compose exec frontend npm install
+	docker compose exec frontend npm install

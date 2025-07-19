@@ -1,3 +1,5 @@
+from typing import Any
+
 from numpy import zeros
 from scipy.optimize import LinearConstraint, minimize
 
@@ -9,13 +11,13 @@ class Rocket:
         self.total_stages = total_stages
         self.payload = payload
         self.delta_v = delta_v
-        self.stages = []
+        self.stages: list[Stage] = []
 
     @property
-    def total_mass(self):
+    def total_mass(self) -> float:
         return self.stages[-1].wet_mass if self.stages else 0.0
 
-    def add_stage(self, specific_impulse: float, propellant_mass_fraction: float):
+    def add_stage(self, specific_impulse: float, propellant_mass_fraction: float) -> None:
         new_stage = Stage(
             self.total_stages - len(self.stages) - 1,
             specific_impulse,
@@ -23,18 +25,18 @@ class Rocket:
         )
         self.stages.append(new_stage)
 
-    def build(self, delta_v_fractions: list[float]):
+    def build(self, delta_v_fractions: list[float]) -> None:
         delta_v_split = [self.delta_v * f for f in delta_v_fractions]
         payload_mass = self.payload
         for i in range(self.total_stages):
             self.stages[i].build(payload_mass, delta_v_split[i])
             payload_mass = self.stages[i].wet_mass
 
-    def __objective__(self, delta_v_fractions: list[float]):
+    def __objective__(self, delta_v_fractions: list[float]) -> float:
         self.build(delta_v_fractions)
         return self.total_mass if self.total_mass > 0 else 1e30
 
-    def optimize(self):
+    def optimize(self) -> None:
         if self.total_stages < 1:
             raise ValueError("Rocket must have at least 1 stage")
 
@@ -56,10 +58,10 @@ class Rocket:
             print("Failed to optimize! Rocket may be impossible or nearly impossible!")
 
     @property
-    def delta_v_split(self):
+    def delta_v_split(self) -> list[float]:
         return [stage.delta_v for stage in self.stages]
 
-    def print_configuration(self):
+    def print_configuration(self) -> None:
         for stage in self.stages:
             print(f"Stage {stage.stage}")
             print("     Wet:", stage.wet_mass)
@@ -71,7 +73,7 @@ class Rocket:
         print("Total Mass:", self.total_mass)
         print()
 
-    def to_json(self):
+    def to_json(self) -> dict[str, Any]:
         return {
             "payload": self.payload,
             "totalDeltaV": self.delta_v,

@@ -108,6 +108,10 @@ ignore = [
     "DJ001", # avoid using null=True on string-based fields
 ]
 
+[tool.ruff.lint.per-file-ignores]
+"*/settings/*.py" = ["F403", "F405"]  # Allow star imports in Django settings
+"*/settings/__init__.py" = ["F403", "F405"]  # Allow star imports in Django settings
+
 [tool.ruff.lint.isort]
 known-third-party = ["django"]
 section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]

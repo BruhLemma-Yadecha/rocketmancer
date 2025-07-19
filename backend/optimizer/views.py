@@ -1,11 +1,11 @@
 from rest_framework.decorators import api_view
+from rest_framework.request import Request
 from rest_framework.response import Response
 
 from .rocket import Rocket
 
 
-@api_view(["POST"])
-def optimize(request):
+def optimize(request: Request) -> Response:
     data = request.data
     rocket0 = Rocket(
         payload=data["payload"],
@@ -20,3 +20,6 @@ def optimize(request):
         )
     rocket0.optimize()
     return Response({"result": rocket0.to_json()})
+
+
+optimize = api_view(["POST"])(optimize)
