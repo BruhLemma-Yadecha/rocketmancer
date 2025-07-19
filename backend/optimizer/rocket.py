@@ -1,7 +1,6 @@
-from typing import List
-
 from numpy import zeros
 from scipy.optimize import LinearConstraint, minimize
+
 from .stage import Stage
 
 
@@ -24,14 +23,14 @@ class Rocket:
         )
         self.stages.append(new_stage)
 
-    def build(self, delta_v_fractions: List[float]):
+    def build(self, delta_v_fractions: list[float]):
         delta_v_split = [self.delta_v * f for f in delta_v_fractions]
         payload_mass = self.payload
         for i in range(self.total_stages):
             self.stages[i].build(payload_mass, delta_v_split[i])
             payload_mass = self.stages[i].wet_mass
 
-    def __objective__(self, delta_v_fractions: List[float]):
+    def __objective__(self, delta_v_fractions: list[float]):
         self.build(delta_v_fractions)
         return self.total_mass if self.total_mass > 0 else 1e30
 
@@ -41,15 +40,15 @@ class Rocket:
 
         linear_constraint = LinearConstraint([1] * self.total_stages, 1, 1)
         initial_configuration = [1 / self.total_stages] * self.total_stages
-        
+
         result_refined = minimize(
             self.__objective__,
             initial_configuration,
-            method='trust-constr',
+            method="trust-constr",
             constraints=[linear_constraint],
             hess=lambda x: zeros((len(x), len(x))),
         )
-        
+
         if result_refined.success:
             self.delta_v_fractions = result_refined.x
             self.build(result_refined.x)
@@ -62,7 +61,7 @@ class Rocket:
 
     def print_configuration(self):
         for stage in self.stages:
-            print("Stage {}".format(stage.stage))
+            print(f"Stage {stage.stage}")
             print("     Wet:", stage.wet_mass)
             print("     Dry:", stage.dry_mass)
             print("     Payload:", stage.payload_mass)
