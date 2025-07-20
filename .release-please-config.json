@@ -1,0 +1,19 @@
+{
+  "release-type": "simple",
+  "version-file": "VERSION",
+  "extra-files": [
+    "frontend/package.json",
+    "backend/pyproject.toml"
+  ],
+  "changelog-sections": [
+    {"type": "feat", "section": "Features"},
+    {"type": "fix", "section": "Bug Fixes"},
+    {"type": "chore", "section": "Miscellaneous"},
+    {"type": "docs", "section": "Documentation"},
+    {"type": "style", "section": "Styles"},
+    {"type": "refactor", "section": "Code Refactoring"},
+    {"type": "perf", "section": "Performance Improvements"},
+    {"type": "test", "section": "Tests"},
+    {"type": "ci", "section": "Continuous Integration"}
+  ]
+}
