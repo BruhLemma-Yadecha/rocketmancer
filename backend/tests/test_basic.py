@@ -3,8 +3,6 @@ Sample tests to demonstrate pytest and coverage setup
 """
 import pytest
 from django.test import TestCase
-from django.urls import reverse
-from rest_framework import status
 from rest_framework.test import APIClient
 
 

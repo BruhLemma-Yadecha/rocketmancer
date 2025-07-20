@@ -57,11 +57,13 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.node,
-        ...globals.jest,
         global: "readonly",
-        jest: "readonly",
+        // Vitest globals
+        vi: "readonly",
+        vitest: "readonly",
         describe: "readonly",
         it: "readonly",
+        test: "readonly",
         expect: "readonly",
         beforeEach: "readonly",
         afterEach: "readonly",

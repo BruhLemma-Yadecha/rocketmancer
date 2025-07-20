@@ -2,7 +2,7 @@
  * Test setup configuration for frontend tests
  */
 
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 
 // Mock environment variables
 Object.defineProperty(import.meta, 'env', {
