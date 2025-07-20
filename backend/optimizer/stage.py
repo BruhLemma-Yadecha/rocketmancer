@@ -5,7 +5,9 @@ from scipy.constants import g
 
 
 class Stage:
-    def __init__(self, stage: int, specific_impulse: float, propellant_mass_fraction: float) -> None:
+    def __init__(
+        self, stage: int, specific_impulse: float, propellant_mass_fraction: float
+    ) -> None:
         self.stage = stage
         self.specific_impulse = specific_impulse
         self.propellant_mass_fraction = propellant_mass_fraction

@@ -17,7 +17,9 @@ class Rocket:
     def total_mass(self) -> float:
         return self.stages[-1].wet_mass if self.stages else 0.0
 
-    def add_stage(self, specific_impulse: float, propellant_mass_fraction: float) -> None:
+    def add_stage(
+        self, specific_impulse: float, propellant_mass_fraction: float
+    ) -> None:
         new_stage = Stage(
             self.total_stages - len(self.stages) - 1,
             specific_impulse,

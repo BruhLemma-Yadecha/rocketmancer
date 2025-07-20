@@ -9,12 +9,26 @@ const Parameters = ({ setRocket, rocketName, setRocketName }) => {
   const [config, setConfig] = useState(undefined);
   const [refresh, setRefresh] = useState(false);
 
-  useEffect(() => {
-    axios.get('/billyJean.json').then(response => {
-      setConfig(response.data);
-      setRocketName(response.data.name);
-    });
-  }, []);
+  // const loadDefaultConfiguration = () => {
+  //   const defaultConfig = {
+  //     name: "Billy Jean",
+  //     totalStages: 2,
+  //     totalDeltaV: 4760.08,
+  //     payload: 1000.0,
+  //     stages: [
+  //       {
+  //         specificImpulse: 307.36,
+  //         propellantMassFraction: 0.83
+  //       },
+  //       {
+  //         specificImpulse: 348.81,
+  //         propellantMassFraction: 0.87
+  //       }
+  //     ]
+  //   };
+  //   setConfig(defaultConfig);
+  //   setRocketName(defaultConfig.name);
+  // };
 
   useEffect(() => {
     if (!config) return;
