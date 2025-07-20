@@ -7,7 +7,7 @@
  * @param {number} mass - Mass in kg
  * @returns {string} Formatted mass string
  */
-export const formatMass = (mass) => {
+export const formatMass = mass => {
   if (mass >= 1000) {
     return `${(mass / 1000).toFixed(2)} t`;
   }
@@ -19,7 +19,7 @@ export const formatMass = (mass) => {
  * @param {number} velocity - Velocity in m/s
  * @returns {string} Formatted velocity string
  */
-export const formatVelocity = (velocity) => {
+export const formatVelocity = velocity => {
   return `${velocity.toFixed(0)} m/s`;
 };
 
@@ -28,7 +28,7 @@ export const formatVelocity = (velocity) => {
  * @param {number} isp - Specific impulse in seconds
  * @returns {string} Formatted Isp string
  */
-export const formatSpecificImpulse = (isp) => {
+export const formatSpecificImpulse = isp => {
   return `${isp.toFixed(0)} s`;
 };
 
@@ -37,7 +37,7 @@ export const formatSpecificImpulse = (isp) => {
  * @param {number} ratio - Mass ratio
  * @returns {string} Formatted ratio string
  */
-export const formatMassRatio = (ratio) => {
+export const formatMassRatio = ratio => {
   return ratio.toFixed(3);
 };
 
@@ -46,7 +46,7 @@ export const formatMassRatio = (ratio) => {
  * @param {number} fraction - Fraction (0-1)
  * @returns {string} Formatted percentage string
  */
-export const formatPercentage = (fraction) => {
+export const formatPercentage = fraction => {
   return `${(fraction * 100).toFixed(1)}%`;
 };
 
@@ -55,6 +55,6 @@ export const formatPercentage = (fraction) => {
  * @param {number} num - Number to format
  * @returns {string} Formatted number string
  */
-export const formatNumber = (num) => {
+export const formatNumber = num => {
   return new Intl.NumberFormat().format(num);
 };

@@ -9,7 +9,7 @@ export const useRocketOptimization = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const optimizeRocket = useCallback(async (rocketConfig) => {
+  const optimizeRocket = useCallback(async rocketConfig => {
     setLoading(true);
     setError(null);
 
@@ -48,6 +48,6 @@ export const useRocketOptimization = () => {
     error,
     optimizeRocket,
     clearRocket,
-    clearError
+    clearError,
   };
 };

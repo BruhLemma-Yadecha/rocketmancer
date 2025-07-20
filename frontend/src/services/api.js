@@ -11,11 +11,11 @@ const api = axios.create({
 
 // Request interceptor for logging
 api.interceptors.request.use(
-  (config) => {
+  config => {
     console.log(`API Request: ${config.method?.toUpperCase()} ${config.url}`);
     return config;
   },
-  (error) => {
+  error => {
     console.error('API Request Error:', error);
     return Promise.reject(error);
   }
@@ -23,12 +23,12 @@ api.interceptors.request.use(
 
 // Response interceptor for error handling
 api.interceptors.response.use(
-  (response) => {
+  response => {
     return response;
   },
-  (error) => {
+  error => {
     console.error('API Response Error:', error);
-    
+
     // Handle common error scenarios
     if (error.response?.status === 500) {
       throw new Error('Server error occurred during optimization');
@@ -39,7 +39,7 @@ api.interceptors.response.use(
     } else if (!error.response) {
       throw new Error('Unable to connect to optimization service');
     }
-    
+
     return Promise.reject(error);
   }
 );
