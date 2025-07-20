@@ -7,7 +7,7 @@ packages = ["rocketmancer", "optimizer"]
 
 [project]
 name = "rocketmancer"
-version = "1.0.0"
+version = "0.1.0"
 description = "Multi-stage rocket delta-V optimizer web application"
 readme = "../README.md"
 license = {file = "../LICENSE"}
@@ -168,7 +168,7 @@ markers = [
 ]
 
 [tool.coverage.run]
-source = "."
+source = ["."]
 omit = [
     "*/migrations/*",
     "*/venv/*",
