@@ -1,0 +1,74 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v2
+
+    - name: Install dependencies
+      working-directory: ./backend
+      run: |
+        uv sync --dev
+
+    - name: Run linting
+      working-directory: ./backend
+      run: |
+        uv run ruff check .
+        uv run ruff format --check .
+
+    - name: Run type checking
+      working-directory: ./backend
+      run: |
+        uv run mypy .
+
+    - name: Run tests with coverage
+      working-directory: ./backend
+      env:
+        DJANGO_ENVIRONMENT: testing
+      run: |
+        uv run pytest --cov=. --cov-report=xml --cov-report=term
+
+  frontend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: './frontend/package-lock.json'
+
+    - name: Install dependencies
+      working-directory: ./frontend
+      run: npm ci
+
+    - name: Run linting
+      working-directory: ./frontend
+      run: npm run lint
+
+    - name: Run format check
+      working-directory: ./frontend
+      run: npm run format:check
+
+    - name: Run tests with coverage
+      working-directory: ./frontend
+      run: npm run test:coverage
