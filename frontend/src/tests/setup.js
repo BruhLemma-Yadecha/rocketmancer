@@ -2,6 +2,8 @@
  * Test setup configuration for frontend tests
  */
 
+import '@testing-library/jest-dom'
+
 // Mock environment variables
 Object.defineProperty(import.meta, 'env', {
   value: {
@@ -12,9 +14,9 @@ Object.defineProperty(import.meta, 'env', {
 // Mock console methods in tests to reduce noise
 global.console = {
   ...console,
-  log: jest.fn(),
-  debug: jest.fn(),
-  info: jest.fn(),
-  warn: jest.fn(),
-  error: jest.fn(),
+  log: vi.fn(),
+  debug: vi.fn(),
+  info: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn(),
 };
