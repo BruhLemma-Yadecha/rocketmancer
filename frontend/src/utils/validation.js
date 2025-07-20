@@ -36,9 +36,9 @@ export const validateNumber = (value, options = {}) => {
  * @param {string|number} value - Mass fraction value
  * @returns {Object} Validation result
  */
-export const validateMassFraction = (value) => {
+export const validateMassFraction = value => {
   const result = validateNumber(value, { min: 0.01, max: 0.99 });
-  
+
   if (!result.isValid) {
     return result;
   }
@@ -56,7 +56,7 @@ export const validateMassFraction = (value) => {
  * @param {string|number} value - Specific impulse value
  * @returns {Object} Validation result
  */
-export const validateSpecificImpulse = (value) => {
+export const validateSpecificImpulse = value => {
   return validateNumber(value, { min: 50, max: 500 });
 };
 
@@ -65,7 +65,7 @@ export const validateSpecificImpulse = (value) => {
  * @param {string|number} value - Payload mass value
  * @returns {Object} Validation result
  */
-export const validatePayload = (value) => {
+export const validatePayload = value => {
   return validateNumber(value, { min: 0.1, max: 1000000 });
 };
 
@@ -74,6 +74,6 @@ export const validatePayload = (value) => {
  * @param {string|number} value - Delta-V value
  * @returns {Object} Validation result
  */
-export const validateDeltaV = (value) => {
+export const validateDeltaV = value => {
   return validateNumber(value, { min: 100, max: 20000 });
 };

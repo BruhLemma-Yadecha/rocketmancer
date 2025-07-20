@@ -1,9 +1,9 @@
-import "../styles/Title.css";
+import '../styles/Title.css';
 
 const Title = () => {
   return (
     <header>
-      <h1 className={"title"}>🚀rocketmancer</h1>
+      <h1 className={'title'}>🚀rocketmancer</h1>
     </header>
   );
 };

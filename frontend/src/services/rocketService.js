@@ -55,9 +55,11 @@ export class RocketService {
           errors.push(`Stage ${index + 1}: Specific impulse must be greater than 0`);
         }
 
-        if (!stage.propellantMassFraction || 
-            stage.propellantMassFraction <= 0 || 
-            stage.propellantMassFraction >= 1) {
+        if (
+          !stage.propellantMassFraction ||
+          stage.propellantMassFraction <= 0 ||
+          stage.propellantMassFraction >= 1
+        ) {
           errors.push(`Stage ${index + 1}: Propellant mass fraction must be between 0 and 1`);
         }
       });
@@ -65,7 +67,7 @@ export class RocketService {
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 }
