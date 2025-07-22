@@ -5,17 +5,15 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
 
-# Copy dependency files
-COPY pyproject.toml uv.lock ./
+COPY LICENSE ../LICENSE
+COPY README.md ../README.md
+COPY backend/pyproject.toml backend/uv.lock ./
 
-# Install dependencies
 RUN uv sync
 
-# Copy project files
-COPY . .
+COPY backend/ .
 
 EXPOSE 8000
 
