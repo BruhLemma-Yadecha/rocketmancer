@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 packages = ["rocketmancer", "optimizer"]
 
 [project]
-name = "rocketmancer"
+name = "rocketmancer-backend"
 version = "0.1.0"
 description = "Multi-stage rocket delta-V optimizer web application"
 readme = "../README.md"
