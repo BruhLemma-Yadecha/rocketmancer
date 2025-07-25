@@ -4,7 +4,7 @@ Development settings for rocketmancer project.
 
 import os
 
-from .base import BASE_DIR, MIDDLEWARE
+from .base import *
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-secret-key-change-in-production")
@@ -25,14 +25,16 @@ DATABASES = {
 # CORS settings for development
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost:5173",  # Vite dev server
     "http://localhost:80",
     "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173",  # Vite dev server
     "http://127.0.0.1:80",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
 
-# Development-specific middleware
+# Development-specific middleware - add CORS to the beginning
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     *MIDDLEWARE,

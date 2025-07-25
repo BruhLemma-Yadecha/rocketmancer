@@ -15,7 +15,7 @@ export class RocketService {
    */
   static async optimize(rocketConfig) {
     try {
-      const response = await api.post('/optimize/', rocketConfig);
+      const response = await api.post('/api/v1/optimize/', rocketConfig);
       return response.data.result;
     } catch (error) {
       console.error('Rocket optimization failed:', error);

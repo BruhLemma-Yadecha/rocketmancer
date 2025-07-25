@@ -26,6 +26,10 @@ jobs:
       run: |
         uv sync --dev
 
+    - name: Remove ruff cache
+      working-directory: ./backend
+      run: rm -rf .ruff_cache
+
     - name: Run linting
       working-directory: ./backend
       run: |

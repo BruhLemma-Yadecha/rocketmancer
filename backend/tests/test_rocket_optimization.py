@@ -3,6 +3,7 @@ Tests for rocket optimization functionality
 """
 
 from django.test import TestCase
+
 from rocketmancer import Rocket, Stage
 
 
