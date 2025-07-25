@@ -31,7 +31,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "rocketmancer.urls"
+ROOT_URLCONF = "rocketmancer_backend.urls"
 
 TEMPLATES = [
     {
