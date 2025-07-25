@@ -7,24 +7,24 @@ const ParametersStage = ({ index, stages, setStages }) => {
     stages[index].propellantMassFraction
   );
 
-  const updateStage = () => {
-    const newStages = [...stages];
-    newStages[index] = { specificImpulse, propellantMassFraction };
-    setStages(newStages);
-  };
-
   const editSpecificImpulse = specificImpulse => {
     specificImpulse = parseFloat(specificImpulse);
     if (specificImpulse < 0) return;
     setSpecificImpulse(specificImpulse);
-    updateStage();
+    
+    const newStages = [...stages];
+    newStages[index] = { ...newStages[index], specificImpulse };
+    setStages(newStages);
   };
 
   const editPropellantMassFraction = propellantMassFraction => {
     propellantMassFraction = parseFloat(propellantMassFraction);
     if (propellantMassFraction < 0) return;
     setPropellantMassFraction(propellantMassFraction);
-    updateStage();
+    
+    const newStages = [...stages];
+    newStages[index] = { ...newStages[index], propellantMassFraction };
+    setStages(newStages);
   };
 
   return (

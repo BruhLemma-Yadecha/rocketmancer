@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: ./backend/Dockerfile
     container_name: backend
-    command: "gunicorn rocketmancer.wsgi:application --bind 0.0.0.0:8000"
+    command: "uv run gunicorn rocketmancer.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - ./backend:/app
     environment:

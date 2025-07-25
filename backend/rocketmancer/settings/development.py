@@ -4,7 +4,7 @@ Development settings for rocketmancer project.
 
 import os
 
-from .base import BASE_DIR, MIDDLEWARE
+from .base import *
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-secret-key-change-in-production")
@@ -32,7 +32,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-# Development-specific middleware
+# Development-specific middleware - add CORS to the beginning
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     *MIDDLEWARE,

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import RocketService from '../../services/rocketService';
 import ParametersStage from './ParametersStage';
 import '../../styles/Parameters.css';
 
@@ -9,33 +9,47 @@ const Parameters = ({ setRocket, rocketName, setRocketName }) => {
   const [config, setConfig] = useState(undefined);
   const [refresh, setRefresh] = useState(false);
 
-  // const loadDefaultConfiguration = () => {
-  //   const defaultConfig = {
-  //     name: "Billy Jean",
-  //     totalStages: 2,
-  //     totalDeltaV: 4760.08,
-  //     payload: 1000.0,
-  //     stages: [
-  //       {
-  //         specificImpulse: 307.36,
-  //         propellantMassFraction: 0.83
-  //       },
-  //       {
-  //         specificImpulse: 348.81,
-  //         propellantMassFraction: 0.87
-  //       }
-  //     ]
-  //   };
-  //   setConfig(defaultConfig);
-  //   setRocketName(defaultConfig.name);
-  // };
+  const loadDefaultConfiguration = () => {
+    const defaultConfig = {
+      name: "Billy Jean",
+      totalStages: 2,
+      totalDeltaV: 4760.08,
+      payload: 1000.0,
+      stages: [
+        {
+          specificImpulse: 307.36,
+          propellantMassFraction: 0.83
+        },
+        {
+          specificImpulse: 348.81,
+          propellantMassFraction: 0.87
+        }
+      ]
+    };
+    setConfig(defaultConfig);
+    setRocketName(defaultConfig.name);
+  };
 
   useEffect(() => {
-    if (!config) return;
-    axios.post('/api/optimize/', config).then(response => {
-      setRocket(response.data.result);
-    });
-  }, [refresh]);
+    // Load default configuration on component mount
+    if (!config) {
+      loadDefaultConfiguration();
+      return;
+    }
+
+    // Use RocketService to optimize the rocket
+    const optimizeRocket = async () => {
+      try {
+        const optimizedRocket = await RocketService.optimize(config);
+        setRocket(optimizedRocket);
+      } catch (error) {
+        console.error('Failed to optimize rocket:', error);
+        // You could add error state handling here
+      }
+    };
+
+    optimizeRocket();
+  }, [refresh, config]);
 
   const setTotalStages = totalStages => {
     totalStages = parseInt(totalStages);
