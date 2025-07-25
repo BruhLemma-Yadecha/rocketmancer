@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
@@ -11,13 +11,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
-      exclude: [
-        'node_modules/',
-        'src/tests/setup.js',
-        '**/*.d.ts',
-        '**/*.config.js',
-        '**/dist/**'
-      ]
-    }
+      exclude: ['node_modules/', 'src/tests/setup.js', '**/*.d.ts', '**/*.config.js', '**/dist/**'],
+    },
   },
-})
+});
