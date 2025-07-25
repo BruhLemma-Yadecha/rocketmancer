@@ -32,7 +32,11 @@ dependencies = [
     "numpy>=2.1.0",
     "scipy>=1.14.0",
     "gunicorn>=23.0.0",
+    "rocketmancer",
 ]
+
+[tool.uv.sources]
+"rocketmancer" = { path = "../packages/rocketmancer" }
 
 [project.optional-dependencies]
 dev = [
@@ -154,7 +158,7 @@ module = "tests.*"
 disallow_untyped_defs = false
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "rocketmancer.settings.testing"
+DJANGO_SETTINGS_MODULE = "rocketmancer_backend.settings.testing"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
 addopts = [
     "--verbose",
