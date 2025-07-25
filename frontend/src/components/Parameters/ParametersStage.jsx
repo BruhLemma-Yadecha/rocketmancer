@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import '../../styles/Parameters.css';
 
 const ParametersStage = ({ index, stages, setStages }) => {
   const [specificImpulse, setSpecificImpulse] = useState(stages[index].specificImpulse);
@@ -27,24 +26,59 @@ const ParametersStage = ({ index, stages, setStages }) => {
     setStages(newStages);
   };
 
+  const getStageColor = (stageIndex) => {
+    const colors = [
+      'bg-blue-50 text-blue-700',
+      'bg-green-50 text-green-700',
+      'bg-purple-50 text-purple-700',
+      'bg-orange-50 text-orange-700',
+      'bg-red-50 text-red-700',
+      'bg-indigo-50 text-indigo-700',
+      'bg-pink-50 text-pink-700',
+      'bg-yellow-50 text-yellow-700'
+    ];
+    return colors[stageIndex % colors.length];
+  };
+
   return (
-    <tr key={index}>
-      <td className={'parameters-stage'}>{index + 1}</td>
-      <td>
-        <input
-          className={'parameters-input parameters-stage'}
-          type="number"
-          value={specificImpulse}
-          onChange={e => editSpecificImpulse(e.target.value)}
-        />
+    <tr className="hover:bg-white/5 transition-colors duration-200">
+      <td className="py-3 px-4">
+        <div className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold ${getStageColor(index)}`}>
+          {index + 1}
+        </div>
       </td>
-      <td>
-        <input
-          className={'parameters-input parameters-stage'}
-          type="number"
-          value={propellantMassFraction}
-          onChange={e => editPropellantMassFraction(e.target.value)}
-        />
+      <td className="py-3 px-4">
+        <div className="relative">
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            value={specificImpulse}
+            onChange={e => editSpecificImpulse(e.target.value)}
+            className="w-full px-3 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg text-center text-white placeholder-white/60 focus:ring-2 focus:ring-blue-400/50 focus:border-white/30 focus:bg-white/15 transition-all duration-200"
+            placeholder="300.0"
+          />
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <span className="text-white/60 text-xs">s</span>
+          </div>
+        </div>
+      </td>
+      <td className="py-3 px-4">
+        <div className="relative">
+          <input
+            type="number"
+            min="0"
+            max="1"
+            step="0.01"
+            value={propellantMassFraction}
+            onChange={e => editPropellantMassFraction(e.target.value)}
+            className="w-full px-3 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg text-center text-white placeholder-white/60 focus:ring-2 focus:ring-blue-400/50 focus:border-white/30 focus:bg-white/15 transition-all duration-200"
+            placeholder="0.85"
+          />
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <span className="text-white/60 text-xs">%</span>
+          </div>
+        </div>
       </td>
     </tr>
   );
