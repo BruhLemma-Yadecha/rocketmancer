@@ -31,7 +31,7 @@ class TestOptimizationAPI(TestCase):
     def test_optimization_success(self):
         """Test successful optimization request"""
         response = self.client.post(
-            "/optimize/",  # Direct URL since we don't have named URL yet
+            "/api/v1/optimize/",
             data=json.dumps(self.valid_payload),
             content_type="application/json",
         )
@@ -85,7 +85,7 @@ class TestOptimizationAPI(TestCase):
 
     def test_optimization_wrong_method(self):
         """Test optimization endpoint with wrong HTTP method"""
-        response = self.client.get("/optimize/")
+        response = self.client.get("/api/v1/optimize/")
 
         # Should not allow GET requests
         self.assertEqual(response.status_code, 405)
@@ -93,7 +93,7 @@ class TestOptimizationAPI(TestCase):
     def test_optimization_invalid_json(self):
         """Test optimization with invalid JSON"""
         response = self.client.post(
-            "/optimize/", data="invalid json", content_type="application/json"
+            "/api/v1/optimize/", data="invalid json", content_type="application/json"
         )
 
         self.assertEqual(response.status_code, 400)
