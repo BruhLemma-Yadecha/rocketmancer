@@ -38,7 +38,7 @@ const Parameters = ({ setRocket, rocketName, setRocketName }) => {
     // Use RocketService to optimize the rocket
     const optimizeRocket = async () => {
       if (!config) return;
-      
+
       setIsOptimizing(true);
       try {
         // Validate configuration before optimization
@@ -47,7 +47,7 @@ const Parameters = ({ setRocket, rocketName, setRocketName }) => {
           console.warn('Configuration validation failed:', validation.errors);
           // Could show toast notification here
         }
-        
+
         const optimizedRocket = await RocketService.optimize(config);
         setRocket(optimizedRocket);
       } catch (error) {
