@@ -1,0 +1,28 @@
+[project]
+name = "rocketmancer"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "jax>=0.7.0",
+    "jaxopt>=0.8.5",
+    "numpy>=2.3.1",
+    "pydantic>=2.0.0",
+    "scipy>=1.11",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0.0",
+    "rocketmancer",
+    "ruff>=0.12.4",
+]
+
+[tool.uv.workspace]
+members = [
+    ".",
+]
+
+[tool.uv.sources]
+rocketmancer = { workspace = true }
