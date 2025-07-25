@@ -1,4 +1,4 @@
-.PHONY: help build up down logs clean dev test lint format lint-backend lint-fix-backend format-backend typecheck-backend test-backend test-backend-cov dev-backend sync-backend
+.PHONY: help build up down logs clean dev test lint format lint-backend lint-fix-backend format-backend typecheck-backend test-backend test-backend-cov test-lib dev-backend sync-backend
 
 # Default target
 help:
@@ -22,6 +22,7 @@ help:
 	@echo "  make dev-backend       - Start Django development server"
 	@echo "  make test-backend      - Run backend tests with pytest"
 	@echo "  make test-backend-cov  - Run backend tests with coverage"
+	@echo "  make test-lib          - Run rocketmancer library tests"
 	@echo "  make lint-backend      - Run ruff check on backend"
 	@echo "  make lint-fix-backend  - Run ruff check with auto-fix"
 	@echo "  make format-backend    - Format backend code with ruff"
@@ -99,6 +100,10 @@ test-backend:
 test-backend-cov:
 	@echo "Running backend tests with coverage..."
 	cd backend && uv run pytest --cov=. --cov-report=html --cov-report=term
+
+test-lib:
+	@echo "Running rocketmancer library tests..."
+	cd packages/rocketmancer && PYTHONPATH=src uv run pytest tests/ -v
 
 dev-backend:
 	@echo "Starting Django development server..."
