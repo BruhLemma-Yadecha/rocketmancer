@@ -3,7 +3,7 @@ Rocket class with optimization capabilities using JAX solver
 """
 
 from typing import List, Tuple, Optional
-from pydantic import BaseModel, Field, ConfigDict, validator
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 
 from .stage import Stage
 from .solvers import get_solver
@@ -32,7 +32,8 @@ class Rocket(BaseModel):
         None, description="Total wet mass after optimization"
     )
 
-    @validator("stages")
+    @field_validator("stages")
+    @classmethod
     def validate_stages(cls, v):
         """Ensure all stages have valid parameters"""
         if not v:
@@ -45,22 +46,25 @@ class Rocket(BaseModel):
 
         return v
 
-    @validator("payload")
+    @field_validator("payload")
+    @classmethod
     def validate_payload(cls, v):
         """Validate payload mass"""
         if v < 0:
             raise ValueError("Payload mass must be non-negative")
         return v
 
-    @validator("total_delta_v")
+    @field_validator("total_delta_v")
+    @classmethod
     def validate_total_delta_v(cls, v):
         """Validate total delta-v requirement"""
         if v < 0:
             raise ValueError("Total delta-v must be non-negative")
         return v
 
-    @validator("total_mass")
-    def validate_total_mass(cls, v, values):
+    @field_validator("total_mass")
+    @classmethod
+    def validate_total_mass(cls, v):
         """
         Context-aware validation for total mass.
         Only enforces constraints if the rocket has been optimized.

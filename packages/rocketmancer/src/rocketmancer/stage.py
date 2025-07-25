@@ -3,7 +3,7 @@ Stage dataclass with Pydantic validation for rocket stages
 """
 
 from typing import Optional, Tuple
-from pydantic import BaseModel, Field, ConfigDict, validator
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 
 
 class Stage(BaseModel):
@@ -36,7 +36,8 @@ class Stage(BaseModel):
     total_mass: Optional[float] = Field(None, description="Total stage mass")
     delta_v: Optional[float] = Field(None, description="Delta-v contribution")
 
-    @validator("propellant_mass", "structural_mass", "total_mass", "delta_v")
+    @field_validator("propellant_mass", "structural_mass", "total_mass", "delta_v")
+    @classmethod
     def validate_computed_fields(cls, v):
         """
         Context-aware validation for computed fields.
