@@ -12,25 +12,37 @@ function fixDecimals(number) {
   return number.toFixed(DECIMAL_PLACES);
 }
 
-const getTypeIcon = (type) => {
+const getTypeIcon = type => {
   switch (type) {
-    case 'velocity': return '🚀';
-    case 'mass': return '⚖️';
-    case 'time': return '⏱️';
-    case 'ratio': return '📊';
-    case 'percentage': return '📈';
-    default: return '📋';
+    case 'velocity':
+      return '🚀';
+    case 'mass':
+      return '⚖️';
+    case 'time':
+      return '⏱️';
+    case 'ratio':
+      return '📊';
+    case 'percentage':
+      return '📈';
+    default:
+      return '📋';
   }
 };
 
-const getTypeColor = (type) => {
+const getTypeColor = type => {
   switch (type) {
-    case 'velocity': return 'text-blue-300';
-    case 'mass': return 'text-green-300';
-    case 'time': return 'text-purple-300';
-    case 'ratio': return 'text-orange-300';
-    case 'percentage': return 'text-red-300';
-    default: return 'text-white/80';
+    case 'velocity':
+      return 'text-blue-300';
+    case 'mass':
+      return 'text-green-300';
+    case 'time':
+      return 'text-purple-300';
+    case 'ratio':
+      return 'text-orange-300';
+    case 'percentage':
+      return 'text-red-300';
+    default:
+      return 'text-white/80';
   }
 };
 
@@ -41,11 +53,11 @@ const DisplayProperty = ({ name, type, stages }) => {
     const withoutSpaces = withoutFirstLetter.replace(/ /g, '');
     return firstLetter + withoutSpaces;
   };
-  
+
   const convertedName = convertName();
   const icon = getTypeIcon(type);
   const colorClass = getTypeColor(type);
-  
+
   return (
     <tr className="hover:bg-white/5 transition-colors duration-200">
       <td className="py-3 px-4">
@@ -53,7 +65,7 @@ const DisplayProperty = ({ name, type, stages }) => {
           <span className="mr-2 text-sm">{icon}</span>
           <div>
             <span className={`font-medium ${colorClass}`}>{name}</span>
-            {(type !== 'ratio' && type !== 'percentage') && (
+            {type !== 'ratio' && type !== 'percentage' && (
               <span className="text-sm text-white/60 ml-1">({typeToUnit[type]})</span>
             )}
           </div>

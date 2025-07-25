@@ -9,20 +9,20 @@ const Parameters = ({ setRocket, rocketName, setRocketName }) => {
 
   const loadDefaultConfiguration = () => {
     const defaultConfig = {
-      name: "Billy Jean",
+      name: 'Billy Jean',
       totalStages: 2,
       totalDeltaV: 4760.08,
       payload: 1000.0,
       stages: [
         {
           specificImpulse: 307.36,
-          propellantMassFraction: 0.83
+          propellantMassFraction: 0.83,
         },
         {
           specificImpulse: 348.81,
-          propellantMassFraction: 0.87
-        }
-      ]
+          propellantMassFraction: 0.87,
+        },
+      ],
     };
     setConfig(defaultConfig);
     setRocketName(defaultConfig.name);
@@ -37,12 +37,22 @@ const Parameters = ({ setRocket, rocketName, setRocketName }) => {
 
     // Use RocketService to optimize the rocket
     const optimizeRocket = async () => {
+      if (!config) return;
+      
+      setIsOptimizing(true);
       try {
-        setIsOptimizing(true);
+        // Validate configuration before optimization
+        const validation = RocketService.validateConfiguration(config);
+        if (!validation.isValid) {
+          console.warn('Configuration validation failed:', validation.errors);
+          // Could show toast notification here
+        }
+        
         const optimizedRocket = await RocketService.optimize(config);
         setRocket(optimizedRocket);
       } catch (error) {
-        console.error('Failed to optimize rocket:', error);
+        console.error('Optimization failed:', error);
+        // Could show error toast notification here
       } finally {
         setIsOptimizing(false);
       }
@@ -99,95 +109,131 @@ const Parameters = ({ setRocket, rocketName, setRocketName }) => {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Header */}
-      <div className="card-glass">
-        <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
-          <div className="w-2 h-2 bg-blue-400 rounded-full mr-3 animate-pulse"></div>
-          Rocket Parameters
+    <>
+      {/* Card 1: Basic Parameters */}
+      <div className="card-glass animate-fade-in">
+        <h2 className="text-base font-bold text-white mb-2 flex items-center">
+          <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-2 animate-pulse"></div>
+          Parameters
         </h2>
-        
-        {/* Main Configuration */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Rocket Name */}
+
+        <div className="space-y-2">
+          {/* Rocket Name - Full Width */}
           <div>
-            <label className="block text-sm font-medium text-white mb-2 flex items-center">
-              <span className="mr-2">🚀</span>
-              Rocket Name
+            <label className="block text-xs font-medium text-white/70 mb-0.5 flex items-center">
+              <span className="mr-1 text-xs">🚀</span>
+              Name
             </label>
             <input
               type="text"
               value={rocketName}
               onChange={e => setName(e.target.value)}
-              className="form-input"
+              className="form-input text-xs py-1 px-2 w-full"
               placeholder="Enter rocket name..."
             />
           </div>
 
-          {/* Total Stages */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2 flex items-center">
-              <span className="mr-2">🔢</span>
-              Total Stages
-            </label>
-            <input
-              type="number"
-              min="1"
-              max="10"
-              value={config.totalStages}
-              onChange={e => setTotalStages(e.target.value)}
-              className="form-input"
-            />
-          </div>
+          {/* Mini Cards Row - Stages, Delta-V, Payload */}
+          <div className="grid grid-cols-3 gap-2">
+            {/* Total Stages */}
+            <div className="bg-white/5 rounded-lg p-2 backdrop-blur-sm border border-white/10">
+              <label className="block text-xs font-medium text-white/70 mb-1 flex items-center">
+                <span className="mr-1 text-xs">🔢</span>
+                Stages
+              </label>
+              <input
+                type="number"
+                min="1"
+                max="10"
+                value={config.totalStages}
+                onChange={e => setTotalStages(e.target.value)}
+                className="form-input text-xs py-1 px-1 w-full text-center"
+              />
+            </div>
 
-          {/* Total Delta-V */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2 flex items-center">
-              <span className="mr-2">⚡</span>
-              Total Delta-V (m/s)
-            </label>
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              value={config.totalDeltaV}
-              onChange={e => setTotalDeltaV(e.target.value)}
-              className="form-input"
-            />
-          </div>
+            {/* Total Delta-V */}
+            <div className="bg-white/5 rounded-lg p-2 backdrop-blur-sm border border-white/10">
+              <label className="block text-xs font-medium text-white/70 mb-1 flex items-center">
+                <span className="mr-1 text-xs">⚡</span>
+                Δv
+              </label>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={config.totalDeltaV}
+                onChange={e => setTotalDeltaV(e.target.value)}
+                className="form-input text-xs py-1 px-1 w-full text-center"
+                placeholder="4760"
+              />
+            </div>
 
-          {/* Payload */}
-          <div>
-            <label className="block text-sm font-medium text-white mb-2 flex items-center">
-              <span className="mr-2">📦</span>
-              Payload (kg)
-            </label>
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              value={config.payload}
-              onChange={e => setPayload(e.target.value)}
-              className="form-input"
-            />
+            {/* Payload */}
+            <div className="bg-white/5 rounded-lg p-2 backdrop-blur-sm border border-white/10">
+              <label className="block text-xs font-medium text-white/70 mb-1 flex items-center">
+                <span className="mr-1 text-xs">📦</span>
+                Mass
+              </label>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={config.payload}
+                onChange={e => setPayload(e.target.value)}
+                className="form-input text-xs py-1 px-1 w-full text-center"
+                placeholder="1000"
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Stages Configuration */}
-      <div className="card">
-        <h3 className="text-lg font-semibold text-white mb-6 flex items-center">
-          <div className="w-2 h-2 bg-green-400 rounded-full mr-3 animate-pulse"></div>
-          Stage Configuration
-        </h3>
-        
+      {/* Card 2: Stage Configuration */}
+      <div className="card-glass animate-fade-in pb-4">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-base font-bold text-white flex items-center">
+            <div className="w-1.5 h-1.5 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+            Stages
+            {isOptimizing && (
+              <div className="ml-2 flex items-center text-xs text-white/60">
+                <div className="animate-spin rounded-full h-1.5 w-1.5 border border-white/40 border-t-white mr-1"></div>
+                optimizing
+              </div>
+            )}
+          </h3>
+          <button
+            onClick={() => setRefresh(!refresh)}
+            disabled={isOptimizing}
+            className="glass p-1 rounded hover:glass-strong transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
+            title="Force recalculate"
+          >
+            <svg
+              className={`w-3 h-3 text-white/80 group-hover:text-white transition-colors duration-200 ${isOptimizing ? 'animate-spin' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
+            </svg>
+          </button>
+        </div>
+
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-white/20">
-                <th className="text-left py-3 px-4 font-semibold text-white">Stage</th>
-                <th className="text-center py-3 px-4 font-semibold text-white">Specific Impulse (s)</th>
-                <th className="text-center py-3 px-4 font-semibold text-white">Propellant Mass Fraction</th>
+                <th className="text-left py-1 px-2 font-medium text-white text-xs">#</th>
+                <th className="text-center py-1 px-2 font-medium text-white text-xs">
+                  Specific Impulse (s)
+                </th>
+                <th className="text-center py-1 px-2 font-medium text-white text-xs">
+                  Mass Fraction
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/10">
@@ -205,37 +251,7 @@ const Parameters = ({ setRocket, rocketName, setRocketName }) => {
           </table>
         </div>
       </div>
-
-      {/* Actions */}
-      <div className="acrylic rounded-xl p-6">
-        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-          <div className="flex items-center text-sm text-white/80">
-            {isOptimizing ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400 mr-2"></div>
-                Optimizing rocket configuration...
-              </>
-            ) : (
-              <>
-                <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                Configuration ready
-              </>
-            )}
-          </div>
-          
-          <button
-            onClick={() => setRefresh(!refresh)}
-            disabled={isOptimizing}
-            className="btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
-          >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            {isOptimizing ? 'Optimizing...' : 'Recalculate'}
-          </button>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

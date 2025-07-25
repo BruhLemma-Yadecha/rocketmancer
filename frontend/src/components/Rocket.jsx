@@ -33,81 +33,71 @@ const Rocket = ({ rocket, rocketName }) => {
   ];
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Header Card */}
-      <div className="card-glass">
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mb-3 animate-rocket-pulse">
-            <span className="text-2xl">🚀</span>
+    <div className="card-glass animate-fade-in">
+      {/* Compact Header with stats inline */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center">
+          <div className="inline-flex items-center justify-center w-7 h-7 bg-white/20 rounded-full mr-2 animate-rocket-pulse">
+            <span className="text-sm">🚀</span>
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">{rocketName}</h2>
-          <p className="text-white/70">Optimized rocket configuration</p>
+          <div>
+            <h2 className="text-lg font-bold text-white">{rocketName}</h2>
+            <p className="text-xs text-white/70">Optimized configuration</p>
+          </div>
         </div>
-        
-        {/* Key Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="glass rounded-lg p-4 text-center hover:glass-strong transition-all duration-300">
-            <div className="text-sm font-medium text-blue-300 mb-1">Stages</div>
-            <div className="text-2xl font-bold text-white">{rocket.totalStages}</div>
+
+        {/* Key Stats - Inline to the right */}
+        <div className="flex gap-3">
+          <div className="glass rounded-lg px-3 py-2 text-center min-w-[80px]">
+            <div className="text-xs font-medium text-blue-300">Stages</div>
+            <div className="text-lg font-bold text-white">{rocket.totalStages}</div>
           </div>
-          <div className="glass rounded-lg p-4 text-center hover:glass-strong transition-all duration-300">
-            <div className="text-sm font-medium text-green-300 mb-1">Total ΔV</div>
-            <div className="text-xl font-bold text-white">
-              {rocket.totalDeltaV.toFixed(DECIMAL_PLACES)}
-              <span className="text-sm font-normal ml-1 text-white/70">{VELOCITY_UNIT}</span>
+          <div className="glass rounded-lg px-3 py-2 text-center min-w-[90px]">
+            <div className="text-xs font-medium text-green-300">ΔV</div>
+            <div className="text-sm font-bold text-white">
+              {rocket.totalDeltaV.toFixed(0)}
+              <span className="text-xs font-normal block text-white/70">m/s</span>
             </div>
           </div>
-          <div className="glass rounded-lg p-4 text-center hover:glass-strong transition-all duration-300">
-            <div className="text-sm font-medium text-purple-300 mb-1">Payload</div>
-            <div className="text-xl font-bold text-white">
-              {rocket.payload.toFixed(DECIMAL_PLACES)}
-              <span className="text-sm font-normal ml-1 text-white/70">kg</span>
-            </div>
-          </div>
-          <div className="glass rounded-lg p-4 text-center hover:glass-strong transition-all duration-300">
-            <div className="text-sm font-medium text-orange-300 mb-1">Total Mass</div>
-            <div className="text-xl font-bold text-white">
-              {rocket.totalMass.toFixed(DECIMAL_PLACES)}
-              <span className="text-sm font-normal ml-1 text-white/70">kg</span>
+          <div className="glass rounded-lg px-3 py-2 text-center min-w-[90px]">
+            <div className="text-xs font-medium text-purple-300">Payload</div>
+            <div className="text-sm font-bold text-white">
+              {rocket.payload.toFixed(0)}
+              <span className="text-xs font-normal block text-white/70">kg</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Detailed Properties Table */}
-      <div className="card">
-        <h3 className="text-lg font-semibold text-white mb-6 flex items-center">
-          <div className="w-2 h-2 bg-blue-400 rounded-full mr-3 animate-pulse"></div>
-          Stage Details
-        </h3>
-        
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-white/20">
-                <th className="text-left py-3 px-4 font-semibold text-white">Property</th>
-                {rocket.stages.map((stage, index) => (
-                  <th key={index} className="text-center py-3 px-4 font-semibold text-white bg-white/5 rounded-t-lg">
-                    <div className="flex items-center justify-center">
-                      <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
-                      Stage {index + 1}
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/10">
-              {properties.map((property, index) => (
-                <DisplayProperty
+      {/* Stage Details Table - More compact */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-white/20">
+              <th className="text-left py-2 px-2 font-medium text-white text-xs">Property</th>
+              {rocket.stages.map((stage, index) => (
+                <th
                   key={index}
-                  name={property.name}
-                  type={property.type}
-                  stages={rocket.stages}
-                />
+                  className="text-center py-2 px-1 font-medium text-white bg-white/5 rounded-t-lg text-xs"
+                >
+                  <div className="flex items-center justify-center">
+                    <span className="w-1 h-1 bg-blue-400 rounded-full mr-1"></span>S{index + 1}
+                  </div>
+                </th>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/10">
+            {properties.map((property, index) => (
+              <DisplayProperty
+                key={index}
+                name={property.name}
+                type={property.type}
+                stages={rocket.stages}
+              />
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
