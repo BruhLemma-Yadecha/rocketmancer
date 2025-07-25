@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rocketmancer import Rocket, SolverError, Stage
 
 
-@api_view(["POST"])
+@api_view(["POST"])  # type: ignore[misc]
 def optimize(request: Request) -> Response:
     """
     Optimize rocket delta-v split using the rocketmancer library.
