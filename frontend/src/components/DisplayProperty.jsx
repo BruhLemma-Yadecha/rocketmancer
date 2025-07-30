@@ -46,7 +46,6 @@ const getTypeColor = type => {
   }
 };
 
-
 const DisplayProperty = ({ name, property, type, stages }) => {
   const colorClass = getTypeColor(type);
 
@@ -65,7 +64,10 @@ const DisplayProperty = ({ name, property, type, stages }) => {
       {stages.map((stage, index) => {
         const value = stage[property];
         if (typeof value !== 'number') {
-          console.warn(`DisplayProperty: Expected number for property '${property}' in stage ${index}, got:`, value);
+          console.warn(
+            `DisplayProperty: Expected number for property '${property}' in stage ${index}, got:`,
+            value
+          );
         }
         return (
           <td key={index} className="py-3 px-4 text-center">
