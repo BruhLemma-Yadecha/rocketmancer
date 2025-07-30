@@ -1,8 +1,8 @@
-from .greedy_solver import GreedySolver
+from .lagrangian_solver import LagrangianSolver
 from .base import BaseSolver
 
 _SOLVERS = {
-    "greedy": GreedySolver,
+    "lagrangian": LagrangianSolver,
 }
 
 

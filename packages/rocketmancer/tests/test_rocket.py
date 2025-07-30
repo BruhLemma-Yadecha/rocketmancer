@@ -60,11 +60,40 @@ class TestRocketValidation:
         assert rocket.total_mass is None
 
 
-# Placeholder for more detailed tests
 class TestRocketOptimizationResults:
-    """Test optimization result correctness - implement in next iteration."""
+    """Test optimization result correctness with reference values."""
 
-    def test_optimization_mass_conservation_placeholder(self):
-        """Placeholder for mass conservation tests."""
-        # TODO: Implement mass conservation validation
-        pass
+    def test_reference_mass_calculation(self):
+        """Test optimization against known reference mass."""
+        from rocketmancer import Stage
+
+        # Reference case with known optimal mass
+        stages = [
+            Stage(specific_impulse=350.0, propellant_mass_fraction=0.85),  # Upper stage
+            Stage(specific_impulse=280.0, propellant_mass_fraction=0.90),  # Lower stage
+        ]
+
+        rocket = Rocket(payload=1000.0, total_delta_v=9500.0, stages=stages)
+
+        # Optimize and check against reference mass
+        delta_v_fractions, total_mass = rocket.optimize()
+
+        # Reference mass from external calculation
+        expected_mass = 97533.4875
+
+        # Allow for small numerical differences (within 0.1%)
+        tolerance = expected_mass * 0.001
+        assert abs(total_mass - expected_mass) < tolerance, (
+            f"Expected mass {expected_mass:.4f} kg, got {total_mass:.4f} kg "
+            f"(difference: {abs(total_mass - expected_mass):.4f} kg, {((total_mass - expected_mass) / expected_mass * 100):.2f} %)"
+        )
+
+        # Verify rocket state is consistent
+        assert rocket.is_optimized()
+        assert rocket.total_mass == total_mass
+
+        # Verify delta-v fractions sum to 1
+        assert abs(sum(delta_v_fractions) - 1.0) < 1e-6
+
+        # Verify all stages are optimized
+        assert all(stage.is_optimized() for stage in rocket.stages)
