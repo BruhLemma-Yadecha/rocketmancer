@@ -25,7 +25,7 @@ jobs:
       working-directory: ./backend
       run: |
         uv sync --dev
-      run: uv run ruff --version
+        uv run ruff --version
 
     - name: Remove ruff cache
       working-directory: ./backend
