@@ -726,7 +726,7 @@ requires-dist = [
 dev = [
     { name = "pytest", specifier = ">=7.0.0" },
     { name = "rocketmancer", virtual = "../packages/rocketmancer" },
-    { name = "ruff", specifier = ">=0.12.4" },
+    { name = "ruff", specifier = "==0.12.5" },
 ]
 
 [[package]]
@@ -798,7 +798,7 @@ requires-dist = [
     { name = "pytest-django", marker = "extra == 'dev'", specifier = ">=4.5.0" },
     { name = "redis", marker = "extra == 'prod'", specifier = ">=5.0.0" },
     { name = "rocketmancer", directory = "../packages/rocketmancer" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.6.0" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = "==0.12.5" },
     { name = "scipy", specifier = ">=1.14.0" },
     { name = "sentry-sdk", extras = ["django"], marker = "extra == 'prod'", specifier = ">=1.32.0" },
     { name = "types-requests", marker = "extra == 'dev'", specifier = ">=2.31.0" },
@@ -815,7 +815,7 @@ dev = [
     { name = "pytest", specifier = ">=7.4.0" },
     { name = "pytest-cov", specifier = ">=4.1.0" },
     { name = "pytest-django", specifier = ">=4.5.0" },
-    { name = "ruff", specifier = ">=0.6.0" },
+    { name = "ruff", specifier = "==0.12.5" },
     { name = "types-requests", specifier = ">=2.31.0" },
 ]
 
