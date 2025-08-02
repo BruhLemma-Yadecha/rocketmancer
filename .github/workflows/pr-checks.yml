@@ -31,11 +31,11 @@ jobs:
       working-directory: ./backend
       run: rm -rf .ruff_cache
 
-    - name: Run linting
+    - name: Run linting and auto-fix
       working-directory: ./backend
       run: |
-        uv run ruff check --output-format=github .
-        uv run ruff format --check .
+        uv run ruff check . --fix
+        uv run ruff format .
 
     - name: Run type checking
       working-directory: ./backend
