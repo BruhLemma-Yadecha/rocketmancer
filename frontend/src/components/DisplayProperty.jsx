@@ -46,23 +46,13 @@ const getTypeColor = type => {
   }
 };
 
-const DisplayProperty = ({ name, type, stages }) => {
-  const convertName = () => {
-    const firstLetter = name[0].toLowerCase();
-    const withoutFirstLetter = name.slice(1);
-    const withoutSpaces = withoutFirstLetter.replace(/ /g, '');
-    return firstLetter + withoutSpaces;
-  };
-
-  const convertedName = convertName();
-  const icon = getTypeIcon(type);
+const DisplayProperty = ({ name, property, type, stages }) => {
   const colorClass = getTypeColor(type);
 
   return (
     <tr className="hover:bg-white/5 transition-colors duration-200">
       <td className="py-3 px-4">
         <div className="flex items-center">
-          <span className="mr-2 text-sm">{icon}</span>
           <div>
             <span className={`font-medium ${colorClass}`}>{name}</span>
             {type !== 'ratio' && type !== 'percentage' && (
@@ -71,13 +61,22 @@ const DisplayProperty = ({ name, type, stages }) => {
           </div>
         </div>
       </td>
-      {stages.map((stage, index) => (
-        <td key={index} className="py-3 px-4 text-center">
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-white/10 text-white backdrop-blur-md border border-white/20">
-            {fixDecimals(stage[convertedName])}
-          </span>
-        </td>
-      ))}
+      {stages.map((stage, index) => {
+        const value = stage[property];
+        if (typeof value !== 'number') {
+          console.warn(
+            `DisplayProperty: Expected number for property '${property}' in stage ${index}, got:`,
+            value
+          );
+        }
+        return (
+          <td key={index} className="py-3 px-4 text-center">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-white/10 text-white backdrop-blur-md border border-white/20">
+              {typeof value === 'number' ? fixDecimals(value) : '-'}
+            </span>
+          </td>
+        );
+      })}
     </tr>
   );
 };

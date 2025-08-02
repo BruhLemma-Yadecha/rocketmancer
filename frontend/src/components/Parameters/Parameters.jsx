@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import RocketService from '../../services/rocketService';
 import ParametersStage from './ParametersStage';
 
+const INPUT_DEBOUNCE_MS = 500;
+
 const Parameters = ({ setRocket, rocketName, setRocketName }) => {
   const [config, setConfig] = useState(undefined);
   const [refresh, setRefresh] = useState(false);
@@ -29,37 +31,35 @@ const Parameters = ({ setRocket, rocketName, setRocketName }) => {
   };
 
   useEffect(() => {
-    // Load default configuration on component mount
     if (!config) {
       loadDefaultConfiguration();
       return;
     }
 
-    // Use RocketService to optimize the rocket
-    const optimizeRocket = async () => {
-      if (!config) return;
+    const debounceTimeout = setTimeout(() => {
+      const optimizeRocket = async () => {
+        if (!config) return;
 
-      setIsOptimizing(true);
-      try {
-        // Validate configuration before optimization
-        const validation = RocketService.validateConfiguration(config);
-        if (!validation.isValid) {
-          console.warn('Configuration validation failed:', validation.errors);
-          // Could show toast notification here
+        setIsOptimizing(true);
+        try {
+          const validation = RocketService.validateConfiguration(config);
+          if (!validation.isValid) {
+            console.warn('Configuration validation failed:', validation.errors);
+          }
+
+          const optimizedRocket = await RocketService.optimize(config);
+          setRocket(optimizedRocket);
+        } catch (error) {
+          console.error('Optimization failed:', error);
+        } finally {
+          setIsOptimizing(false);
         }
+      };
+      optimizeRocket();
+    }, INPUT_DEBOUNCE_MS);
 
-        const optimizedRocket = await RocketService.optimize(config);
-        setRocket(optimizedRocket);
-      } catch (error) {
-        console.error('Optimization failed:', error);
-        // Could show error toast notification here
-      } finally {
-        setIsOptimizing(false);
-      }
-    };
-
-    optimizeRocket();
-  }, [refresh, config]);
+    return () => clearTimeout(debounceTimeout);
+  }, [config, refresh]);
 
   const setTotalStages = totalStages => {
     totalStages = parseInt(totalStages);

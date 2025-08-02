@@ -49,7 +49,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "rocketmancer.wsgi.application"
+WSGI_APPLICATION = "rocketmancer_backend.wsgi.application"
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

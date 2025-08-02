@@ -7,24 +7,21 @@ packages = ["rocketmancer", "optimizer"]
 
 [project]
 name = "rocketmancer-backend"
-version = "0.1.0"
+version = "0.1.1"
 description = "Multi-stage rocket delta-V optimizer web application"
 readme = "../README.md"
 license = {file = "../LICENSE"}
 authors = [
-    {name = "Rocketmancer Team"}
+    {name = "Bruh Lemma Yadecha"}
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Physics",
-    "Topic :: Scientific/Engineering :: Astronomy",
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.13.5"
 dependencies = [
     "Django>=5.1.0",
     "djangorestframework>=3.15.0",
@@ -32,7 +29,7 @@ dependencies = [
     "numpy>=2.1.0",
     "scipy>=1.14.0",
     "gunicorn>=23.0.0",
-    "rocketmancer",
+    "rocketmancer>=0.1.1",
 ]
 
 [tool.uv.sources]
@@ -40,7 +37,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "ruff>=0.6.0",
+    "ruff==0.12.5",
     "mypy>=1.11.0",
     "pytest>=7.4.0",
     "pytest-django>=4.5.0",
@@ -69,7 +66,7 @@ Documentation = "https://github.com/your-username/rocketmancer-web/docs"
 
 [tool.uv]
 dev-dependencies = [
-    "ruff>=0.6.0",
+    "ruff==0.12.5",
     "mypy>=1.11.0",
     "pytest>=7.4.0",
     "pytest-django>=4.5.0",
@@ -83,7 +80,7 @@ dev-dependencies = [
 
 # Ruff configuration - replaces black, isort, and flake8
 [tool.ruff]
-target-version = "py311"
+target-version = "py313"
 line-length = 88
 extend-exclude = [
     "migrations",
@@ -128,7 +125,7 @@ line-ending = "auto"
 
 # MyPy configuration for strict type checking
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.13"
 check_untyped_defs = true
 disallow_any_generics = true
 disallow_incomplete_defs = true

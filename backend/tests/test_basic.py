@@ -26,7 +26,7 @@ class RocketOptimizationTests(TestCase):
         try:
             from rocketmancer import Rocket, Stage
 
-            stages = [Stage(isp=307.36, propellant_mass_fraction=0.83)]
+            stages = [Stage(specific_impulse=307.36, propellant_mass_fraction=0.83)]
             rocket = Rocket(payload=1000.0, total_delta_v=4760.08, stages=stages)
             self.assertIsNotNone(rocket)
         except ImportError:
@@ -36,7 +36,7 @@ class RocketOptimizationTests(TestCase):
         try:
             from rocketmancer import Stage
 
-            stage = Stage(isp=307.36, propellant_mass_fraction=0.83)
+            stage = Stage(specific_impulse=307.36, propellant_mass_fraction=0.83)
             self.assertIsNotNone(stage)
         except ImportError:
             pytest.skip("Stage module not available")

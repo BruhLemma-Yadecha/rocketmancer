@@ -4,15 +4,15 @@ Multi-stage rocket optimization library for delta-v allocation.
 
 ## Overview
 
-Rocketmancer is a Python library for optimizing multi-stage rocket configurations. It uses a greedy allocation algorithm to distribute delta-v across rocket stages to minimize total vehicle mass while meeting mission requirements.
+Rocketmancer is a Python library for optimizing multi-stage rocket configurations. It uses Lagrangian optimization with automatic differentiation to find the optimal delta-v allocation across rocket stages, minimizing total vehicle mass while meeting mission requirements.
 
 ## Features
 
 - **Multi-stage optimization**: Optimize delta-v allocation across any number of rocket stages
-- **Greedy solver**: Efficient closed-form solver with configurable parameters
+- **Lagrangian solver**: Optimal delta-v allocation using Lagrange multipliers with JAX automatic differentiation
 - **Robust validation**: Comprehensive input validation and error handling
 - **Type safety**: Full type hints and runtime validation with Pydantic
-- **High performance**: Built on JAX and NumPy for efficient numerical computation
+- **High performance**: Built on JAX for efficient numerical computation and automatic differentiation
 
 ## Installation
 
@@ -27,8 +27,8 @@ from rocketmancer import Rocket, Stage
 
 # Define rocket stages (from top to bottom)
 stages = [
-    Stage(isp=350.0, propellant_mass_fraction=0.85),  # Upper stage
-    Stage(isp=280.0, propellant_mass_fraction=0.90),  # Lower stage
+    Stage(specific_impulse=350.0, propellant_mass_fraction=0.85),  # Upper stage
+    Stage(specific_impulse=280.0, propellant_mass_fraction=0.90),  # Lower stage
 ]
 
 # Create rocket with mission requirements
@@ -57,7 +57,7 @@ Represents a single rocket stage with propulsion characteristics.
 
 **Parameters:**
 
-- `isp` (float): Specific impulse in seconds
+- `specific_impulse` (float): Specific impulse in seconds
 - `propellant_mass_fraction` (float): Ratio of propellant mass to total stage mass (0 < φ < 1)
 
 #### `Rocket`
@@ -72,15 +72,14 @@ Represents a complete multi-stage rocket system.
 
 ### Solver Configuration
 
-The greedy solver supports configurable parameters for fine-tuning optimization behavior:
+The Lagrangian solver uses automatic differentiation for optimal performance:
 
 ```python
-# Use custom solver parameters
-result = rocket.optimize(
-    method='greedy',
-    safety_margin=0.995,     # Numerical stability factor (default: 0.999)
-    convergence_tol=1e-12    # Allocation precision (default: 1e-15)
-)
+# The solver automatically uses the most efficient method
+result = rocket.optimize(method='lagrangian')
+
+# Or simply use the default (lagrangian is the default)
+result = rocket.optimize()
 ```
 
 ### Error Handling

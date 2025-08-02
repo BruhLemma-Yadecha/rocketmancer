@@ -33,7 +33,7 @@ class TestSolverInterface:
     def test_solver_solve_method_signature(self, solver_name, simple_two_stage_data):
         """Test that solve method accepts correct arguments and returns correct types."""
         payload, total_delta_v, stages = simple_two_stage_data
-        specific_impulses = [stage.isp for stage in stages]
+        specific_impulses = [stage.specific_impulse for stage in stages]
         propellant_mass_fractions = [stage.propellant_mass_fraction for stage in stages]
 
         solver = get_solver(solver_name)
@@ -56,21 +56,9 @@ class TestSolverInterface:
         solver = get_solver(solver_name)
 
         # Test negative payload
-        with pytest.raises(
-            ValueError, match="payload and total_delta_v must be non-negative"
-        ):
+        with pytest.raises(ValueError, match="payload must be ≥ 0"):
             solver.solve(-100.0, 9000.0, [350.0], [0.85])
 
         # Test mismatched array lengths
         with pytest.raises(ValueError, match="must be same non-zero length"):
             solver.solve(1000.0, 9000.0, [350.0, 280.0], [0.85])
-
-
-# Placeholder for convergence tests - to be implemented next
-class TestSolverConvergence:
-    """Test solver convergence and correctness."""
-
-    def test_basic_convergence_placeholder(self, solver_name, simple_two_stage_data):
-        """Placeholder for convergence tests - implement in next iteration."""
-        # TODO: Implement actual convergence validation
-        pass

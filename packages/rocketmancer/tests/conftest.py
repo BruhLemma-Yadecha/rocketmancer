@@ -12,8 +12,8 @@ def simple_two_stage_data():
     payload = 1000.0  # kg
     total_delta_v = 9500.0  # m/s
     stages = [
-        Stage(isp=350.0, propellant_mass_fraction=0.85),  # Upper stage
-        Stage(isp=280.0, propellant_mass_fraction=0.90),  # Lower stage
+        Stage(specific_impulse=350.0, propellant_mass_fraction=0.85),  # Upper stage
+        Stage(specific_impulse=280.0, propellant_mass_fraction=0.90),  # Lower stage
     ]
     return payload, total_delta_v, stages
 
@@ -24,14 +24,14 @@ def three_stage_data():
     payload = 5000.0  # kg
     total_delta_v = 12000.0  # m/s
     stages = [
-        Stage(isp=420.0, propellant_mass_fraction=0.85),  # Upper stage
-        Stage(isp=350.0, propellant_mass_fraction=0.88),  # Middle stage
-        Stage(isp=280.0, propellant_mass_fraction=0.92),  # Lower stage
+        Stage(specific_impulse=420.0, propellant_mass_fraction=0.85),  # Upper stage
+        Stage(specific_impulse=350.0, propellant_mass_fraction=0.88),  # Middle stage
+        Stage(specific_impulse=280.0, propellant_mass_fraction=0.92),  # Lower stage
     ]
     return payload, total_delta_v, stages
 
 
-@pytest.fixture(params=["greedy"])
+@pytest.fixture(params=["lagrangian"])
 def solver_name(request):
     """Parameterized fixture for all available solver types."""
     return request.param

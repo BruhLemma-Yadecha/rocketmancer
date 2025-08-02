@@ -1,10 +1,5 @@
 import DisplayProperty from './DisplayProperty';
 
-const MASS_UNIT = 't';
-const VELOCITY_UNIT = 'm/s';
-const SPECIFIC_IMPULSE_UNIT = 's';
-const DECIMAL_PLACES = 4;
-
 const Rocket = ({ rocket, rocketName }) => {
   if (!rocket) {
     return (
@@ -20,16 +15,12 @@ const Rocket = ({ rocket, rocketName }) => {
   }
 
   const properties = [
-    { name: 'Delta V', type: 'velocity' },
-    { name: 'Mass Ratio', type: 'ratio' },
-    { name: 'Payload Mass', type: 'mass' },
-    { name: 'Wet Mass', type: 'mass' },
-    { name: 'Dry Mass', type: 'mass' },
-    { name: 'Structural Mass', type: 'mass' },
-    { name: 'Propellant Mass', type: 'mass' },
-    { name: 'Exhaust Velocity', type: 'velocity' },
-    { name: 'Specific Impulse', type: 'time' },
-    { name: 'Propellant Mass Fraction', type: 'percentage' },
+    { name: 'Delta V', property: 'deltaV', type: 'velocity' },
+    { name: 'Mass Ratio', property: 'massRatio', type: 'ratio' },
+    { name: 'Payload Mass', property: 'payloadMass', type: 'mass' },
+    { name: 'Wet Mass', property: 'totalMass', type: 'mass' },
+    { name: 'Dry Mass', property: 'structuralMass', type: 'mass' },
+    { name: 'Propellant Mass', property: 'propellantMass', type: 'mass' },
   ];
 
   return (
@@ -42,7 +33,6 @@ const Rocket = ({ rocket, rocketName }) => {
           </div>
           <div>
             <h2 className="text-lg font-bold text-white">{rocketName}</h2>
-            <p className="text-xs text-white/70">Optimized configuration</p>
           </div>
         </div>
 
@@ -50,7 +40,7 @@ const Rocket = ({ rocket, rocketName }) => {
         <div className="flex gap-3">
           <div className="glass rounded-lg px-3 py-2 text-center min-w-[80px]">
             <div className="text-xs font-medium text-blue-300">Stages</div>
-            <div className="text-lg font-bold text-white">{rocket.totalStages}</div>
+            <div className="text-lg font-bold text-white">{rocket.stages.length}</div>
           </div>
           <div className="glass rounded-lg px-3 py-2 text-center min-w-[90px]">
             <div className="text-xs font-medium text-green-300">ΔV</div>
@@ -63,6 +53,13 @@ const Rocket = ({ rocket, rocketName }) => {
             <div className="text-xs font-medium text-purple-300">Payload</div>
             <div className="text-sm font-bold text-white">
               {rocket.payload.toFixed(0)}
+              <span className="text-xs font-normal block text-white/70">kg</span>
+            </div>
+          </div>
+          <div className="glass rounded-lg px-3 py-2 text-center min-w-[110px]">
+            <div className="text-xs font-medium text-yellow-300">Total Mass</div>
+            <div className="text-sm font-bold text-white">
+              {typeof rocket.totalMass === 'number' ? rocket.totalMass.toFixed(2) : '-'}
               <span className="text-xs font-normal block text-white/70">kg</span>
             </div>
           </div>
@@ -80,9 +77,7 @@ const Rocket = ({ rocket, rocketName }) => {
                   key={index}
                   className="text-center py-2 px-1 font-medium text-white bg-white/5 rounded-t-lg text-xs"
                 >
-                  <div className="flex items-center justify-center">
-                    <span className="w-1 h-1 bg-blue-400 rounded-full mr-1"></span>S{index + 1}
-                  </div>
+                  <div className="flex items-center justify-center">S{index + 1}</div>
                 </th>
               ))}
             </tr>
@@ -92,6 +87,7 @@ const Rocket = ({ rocket, rocketName }) => {
               <DisplayProperty
                 key={index}
                 name={property.name}
+                property={property.property}
                 type={property.type}
                 stages={rocket.stages}
               />

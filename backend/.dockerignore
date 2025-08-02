@@ -58,3 +58,15 @@ media/
 
 # Documentation
 docs/_build/
+README*
+*.md
+
+# Docker files
+Dockerfile*
+docker-compose*
+
+# Additional optimizations
+.mypy_cache/
+.tox/
+*.tar.gz
+*.zip

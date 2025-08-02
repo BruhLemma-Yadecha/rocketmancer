@@ -16,8 +16,8 @@ class TestRocketOptimization(TestCase):
         self.test_delta_v = 5000.0
 
         # Create test stages
-        self.stage1 = Stage(isp=400.0, propellant_mass_fraction=0.9)
-        self.stage2 = Stage(isp=350.0, propellant_mass_fraction=0.9)
+        self.stage1 = Stage(specific_impulse=400.0, propellant_mass_fraction=0.9)
+        self.stage2 = Stage(specific_impulse=350.0, propellant_mass_fraction=0.9)
         self.test_stages = [self.stage1, self.stage2]
 
     def test_rocket_creation(self):
@@ -34,9 +34,9 @@ class TestRocketOptimization(TestCase):
 
     def test_stage_creation(self):
         """Test basic stage creation"""
-        stage = Stage(isp=400.0, propellant_mass_fraction=0.9)
+        stage = Stage(specific_impulse=400.0, propellant_mass_fraction=0.9)
 
-        self.assertEqual(stage.isp, 400.0)
+        self.assertEqual(stage.specific_impulse, 400.0)
         self.assertEqual(stage.propellant_mass_fraction, 0.9)
         # Computed fields should be None initially
         self.assertIsNone(stage.propellant_mass)
@@ -110,27 +110,27 @@ class TestStage(TestCase):
 
     def test_stage_creation(self):
         """Test stage creation"""
-        stage = Stage(isp=400.0, propellant_mass_fraction=0.9)
+        stage = Stage(specific_impulse=400.0, propellant_mass_fraction=0.9)
 
-        self.assertEqual(stage.isp, 400.0)
+        self.assertEqual(stage.specific_impulse, 400.0)
         self.assertEqual(stage.propellant_mass_fraction, 0.9)
 
     def test_stage_validation(self):
         """Test stage validation"""
-        # Test negative isp
+        # Test negative specific_impulse
         with self.assertRaises(ValueError):
-            Stage(isp=-100.0, propellant_mass_fraction=0.9)
+            Stage(specific_impulse=-100.0, propellant_mass_fraction=0.9)
 
         # Test invalid propellant mass fraction
         with self.assertRaises(ValueError):
-            Stage(isp=400.0, propellant_mass_fraction=1.5)
+            Stage(specific_impulse=400.0, propellant_mass_fraction=1.5)
 
         with self.assertRaises(ValueError):
-            Stage(isp=400.0, propellant_mass_fraction=-0.1)
+            Stage(specific_impulse=400.0, propellant_mass_fraction=-0.1)
 
     def test_stage_json_serialization(self):
         """Test stage JSON serialization"""
-        stage = Stage(isp=400.0, propellant_mass_fraction=0.9)
+        stage = Stage(specific_impulse=400.0, propellant_mass_fraction=0.9)
 
         json_str = stage.json()
 
@@ -142,6 +142,6 @@ class TestStage(TestCase):
 
         json_data = json.loads(json_str)
 
-        expected_fields = ["isp", "propellant_mass_fraction"]
+        expected_fields = ["specific_impulse", "propellant_mass_fraction"]
         for field in expected_fields:
             self.assertIn(field, json_data)
