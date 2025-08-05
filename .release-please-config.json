@@ -1,20 +1,20 @@
 {
-  "release-type": "simple",
-  "version-file": "VERSION",
-  "extra-files": [
-    "frontend/package.json",
-    "backend/pyproject.toml",
-    "packages/rocketmancer/pyproject.toml"
-  ],
-  "changelog-sections": [
-    {"type": "feat", "section": "Features"},
-    {"type": "fix", "section": "Bug Fixes"},
-    {"type": "chore", "section": "Miscellaneous"},
-    {"type": "docs", "section": "Documentation"},
-    {"type": "style", "section": "Styles"},
-    {"type": "refactor", "section": "Code Refactoring"},
-    {"type": "perf", "section": "Performance Improvements"},
-    {"type": "test", "section": "Tests"},
-    {"type": "ci", "section": "Continuous Integration"}
-  ]
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    "frontend": {
+      "component": "frontend",
+      "release-type": "node",
+      "package-name": "frontend"
+    },
+    "backend": {
+      "component": "backend",
+      "release-type": "python",
+      "package-name": "backend"
+    },
+    "packages/rocketmancer": {
+      "component": "rocketmancer",
+      "release-type": "python",
+      "package-name": "rocketmancer"
+    }
+  }
 }
