@@ -3,7 +3,8 @@
   "version-file": "VERSION",
   "extra-files": [
     "frontend/package.json",
-    "backend/pyproject.toml"
+    "backend/pyproject.toml",
+    "packages/rocketmancer/pyproject.toml"
   ],
   "changelog-sections": [
     {"type": "feat", "section": "Features"},

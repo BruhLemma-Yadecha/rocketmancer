@@ -1,10 +1,10 @@
 import json
+from typing import Any
 
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from rest_framework.response import Response
-
 from rocketmancer import Rocket, SolverError, Stage
 
 
@@ -46,7 +46,7 @@ def optimize(request: Request) -> Response:
             parts = s.split("_")
             return parts[0] + "".join(part.capitalize() for part in parts[1:])
 
-        def json_switch_case(data: dict) -> dict:
+        def json_switch_case(data: Any) -> Any:
             """Recursively convert keys in a dictionary from snake_case to camelCase."""
             if isinstance(data, dict):
                 return {
