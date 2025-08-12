@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/BruhLemma-Yadecha/rocketmancer-web/compare/backend-v0.1.3...backend-v0.1.4) (2025-08-12)
+
+
+### Bug Fixes
+
+* **locks:** update lock files. ([9e8ef52](https://github.com/BruhLemma-Yadecha/rocketmancer-web/commit/9e8ef5251b62fda4aeb2a6fccc2690bbdf685b2b))
+
 ## [0.1.3](https://github.com/BruhLemma-Yadecha/rocketmancer-web/compare/backend-v0.1.2...backend-v0.1.3) (2025-08-05)
 
 
