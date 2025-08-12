@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/BruhLemma-Yadecha/rocketmancer-web/compare/backend-v0.1.2...backend-v0.1.3) (2025-08-05)
+
+
+### Documentation
+
+* update README and add project icon ([1440eca](https://github.com/BruhLemma-Yadecha/rocketmancer-web/commit/1440ecacda56ec479e578a6a692b6dc162d74624))
+
 ## [0.1.2](https://github.com/BruhLemma-Yadecha/rocketmancer-web/compare/backend-v0.1.1...backend-v0.1.2) (2025-08-05)
 
 
