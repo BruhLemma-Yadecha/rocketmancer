@@ -11,6 +11,8 @@
 
 *A multi-stage rocket delta-v optimizer.*
 
+[**Live Demo**](https://rocketmancer.thaumics.org)
+
 </div>
 
 ## Background
