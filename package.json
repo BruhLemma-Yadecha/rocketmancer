@@ -9,8 +9,8 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "vitest",
-    "test:coverage": "vitest --coverage",
+    "test": "vitest --run",
+    "test:coverage": "vitest --run --coverage",
     "format": "prettier --write \"src/**/*.{js,jsx,css}\"",
     "format:check": "prettier --check \"src/**/*.{js,jsx,css}\""
   },
