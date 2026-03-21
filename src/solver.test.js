@@ -160,6 +160,13 @@ describe('optimize validation', () => {
     expect(() => optimize(1000, 3000, [])).toThrow('At least one stage');
   });
 
+  it('rejects infeasible delta-v', () => {
+    // Single low-Isp stage with PMF 0.5 can provide very little delta-v
+    expect(() =>
+      optimize(1000, 100000, [{ specificImpulse: 200, propellantMassFraction: 0.5 }])
+    ).toThrow('physically provide');
+  });
+
   it('rejects out-of-range minContribution', () => {
     expect(() => optimize(1000, 3000, validStage, -1)).toThrow('Minimum contribution');
     // 1 stage → max is 100%, but 2 stages → max is 50%

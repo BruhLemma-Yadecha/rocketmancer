@@ -1,12 +1,17 @@
 const G0 = 9.80665;
 const BISECT_TOL = 1e-10;
 const BISECT_MAX_ITER = 200;
+const BRACKET_MAX_ITER = 100;
 const DV_EPSILON = 1e-6;
 
 // Bisection search for λ such that f(λ) = target.
 // f must be monotonically increasing in λ.
 function bisect(f, target, lo = BISECT_TOL, hi = 1) {
-  while (f(hi) < target) hi *= 2;
+  let bracket = 0;
+  while (f(hi) < target) {
+    hi *= 2;
+    if (++bracket > BRACKET_MAX_ITER) return { lambda: hi, converged: false };
+  }
 
   for (let i = 0; i < BISECT_MAX_ITER; i++) {
     const mid = (lo + hi) / 2;
@@ -26,7 +31,15 @@ function bisect(f, target, lo = BISECT_TOL, hi = 1) {
 // solve reduces to bisecting on λ until Σ Δv_i = Δv_total.
 //
 // Returns { dvs: number[], lambda: number, converged: boolean }.
+function maxDeltaV(isps, sfs) {
+  return isps.reduce((sum, isp, i) => sum + isp * G0 * Math.log(1 / sfs[i]), 0);
+}
+
 function solveUnconstrainedSplit(isps, sfs, totalDv) {
+  if (totalDv > maxDeltaV(isps, sfs)) {
+    throw new Error('Requested delta-v exceeds what these stages can physically provide');
+  }
+
   function dvForLambda(lambda) {
     return isps.map((isp, i) => {
       const mr = (1 - 1 / (lambda * isp * G0)) / sfs[i];
@@ -157,11 +170,17 @@ function validate(payload, totalDeltaV, stages, minContribution) {
       propellantMassFraction <= 0 ||
       propellantMassFraction >= 1
     ) {
-      throw new Error(`Stage ${i + 1}: propellant mass fraction must be between 0 and 1 (exclusive)`);
+      throw new Error(
+        `Stage ${i + 1}: propellant mass fraction must be between 0 and 1 (exclusive)`
+      );
     }
   }
   const maxContribution = 100 / stages.length;
-  if (!Number.isFinite(minContribution) || minContribution < 0 || minContribution > maxContribution) {
+  if (
+    !Number.isFinite(minContribution) ||
+    minContribution < 0 ||
+    minContribution > maxContribution
+  ) {
     throw new Error(
       `Minimum contribution must be between 0 and ${Math.floor(maxContribution)} for ${stages.length} stages`
     );
@@ -176,9 +195,10 @@ export function optimize(payload, totalDeltaV, stages, minContribution = 0) {
   const sfs = pmfs.map(pmf => 1 - pmf);
   const minDv = (minContribution / 100) * totalDeltaV;
 
-  const { dvs, converged } = minDv > 0
-    ? solveConstrainedSplit(isps, sfs, totalDeltaV, minDv)
-    : solveUnconstrainedSplit(isps, sfs, totalDeltaV);
+  const { dvs, converged } =
+    minDv > 0
+      ? solveConstrainedSplit(isps, sfs, totalDeltaV, minDv)
+      : solveUnconstrainedSplit(isps, sfs, totalDeltaV);
 
   if (!converged) {
     throw new Error('Solver failed to converge');
