@@ -69,6 +69,7 @@ body {
 
 .results-card {
   grid-column: 1 / -1;
+  overflow-x: auto;
 }
 
 /* Cards */
@@ -530,8 +531,19 @@ tr:hover {
     grid-template-columns: 1fr;
   }
 
+  .result-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
   .stats-bar {
     justify-content: center;
+    width: 100%;
+  }
+
+  .setting-row {
+    flex-wrap: wrap;
   }
 
   header h1 {
