@@ -9,12 +9,12 @@ import Results from './components/Results';
 import './styles/index.css';
 
 const DEFAULTS = {
-  name: 'Billy Jean',
-  totalDeltaV: 4760.08,
-  payload: 1000,
+  name: 'Falcon 9 Block 5 (exp.)',
+  totalDeltaV: 9400,
+  payload: 22800,
   stages: [
-    { specificImpulse: 307.36, propellantMassFraction: 0.83 },
-    { specificImpulse: 348.81, propellantMassFraction: 0.87 },
+    { specificImpulse: 312, propellantMassFraction: 0.947 },
+    { specificImpulse: 348, propellantMassFraction: 0.96 },
   ],
 };
 
