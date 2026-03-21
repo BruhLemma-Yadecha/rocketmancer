@@ -13,8 +13,9 @@ describe('App', () => {
     expect(screen.getByRole('heading', { level: 1, name: /rocketmancer/i })).toBeInTheDocument();
   });
 
-  it('renders rocket emojis', () => {
+  it('renders parameter inputs', () => {
     render(<App />);
-    expect(screen.getAllByLabelText('rocket').length).toBeGreaterThan(0);
+    expect(screen.getByText('Parameters')).toBeInTheDocument();
+    expect(screen.getAllByText('Stages').length).toBeGreaterThan(0);
   });
 });

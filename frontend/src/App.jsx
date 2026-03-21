@@ -1,38 +1,89 @@
-import { useState } from 'react';
-import Rocket from './components/Rocket';
-import Title from './components/Title';
-import Parameters from './components/Parameters/Parameters';
-import Footer from './Footer';
+import { useState, useEffect, useCallback } from 'react';
+import { optimize } from './solver';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Parameters from './components/Parameters';
+import StagesInput from './components/StagesInput';
+import Results from './components/Results';
 import './styles/index.css';
 
+const DEFAULTS = {
+  name: 'Billy Jean',
+  totalDeltaV: 4760.08,
+  payload: 1000,
+  stages: [
+    { specificImpulse: 307.36, propellantMassFraction: 0.83 },
+    { specificImpulse: 348.81, propellantMassFraction: 0.87 },
+  ],
+};
+
 function App() {
-  const [rocket, setRocket] = useState(undefined);
-  const [rocketName, setRocketName] = useState(undefined);
+  const [name, setName] = useState(DEFAULTS.name);
+  const [payload, setPayload] = useState(DEFAULTS.payload);
+  const [totalDeltaV, setTotalDeltaV] = useState(DEFAULTS.totalDeltaV);
+  const [stages, setStages] = useState(DEFAULTS.stages);
+  const [result, setResult] = useState(null);
+
+  const runOptimizer = useCallback(() => {
+    if (payload <= 0 || totalDeltaV <= 0) return;
+    if (
+      stages.some(
+        (s) =>
+          s.specificImpulse <= 0 || s.propellantMassFraction <= 0 || s.propellantMassFraction >= 1
+      )
+    )
+      return;
+
+    try {
+      setResult(optimize(payload, totalDeltaV, stages));
+    } catch {
+      setResult(null);
+    }
+  }, [payload, totalDeltaV, stages]);
+
+  useEffect(() => {
+    const t = setTimeout(runOptimizer, 300);
+    return () => clearTimeout(t);
+  }, [runOptimizer]);
+
+  const updateStage = (index, field, value) => {
+    setStages(stages.map((s, i) => (i === index ? { ...s, [field]: value } : s)));
+  };
+
+  const setStageCount = (count) => {
+    count = Math.max(1, Math.min(10, parseInt(count) || 1));
+    if (count < stages.length) {
+      setStages(stages.slice(0, count));
+    } else {
+      const extra = Array.from({ length: count - stages.length }, () => ({
+        specificImpulse: 300,
+        propellantMassFraction: 0.9,
+      }));
+      setStages([...stages, ...extra]);
+    }
+  };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Title />
-
-      <main className="flex-1 container mx-auto px-4 py-3">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-3 max-w-7xl mx-auto">
-          {/* Left Column - Compact configuration cards */}
-          <div className="lg:col-span-2 space-y-3 order-2 lg:order-1">
-            <Parameters
-              rocketName={rocketName}
-              setRocketName={setRocketName}
-              setRocket={setRocket}
-            />
-          </div>
-
-          {/* Right Column - Rocket Display (takes 3/5 of the space) */}
-          <div className="lg:col-span-3 order-1 lg:order-2">
-            <Rocket rocket={rocket} rocketName={rocketName} />
-          </div>
+    <>
+      <Header />
+      <main className="container">
+        <div className="layout">
+          <Results result={result} name={name} />
+          <Parameters
+            name={name}
+            setName={setName}
+            payload={payload}
+            setPayload={setPayload}
+            totalDeltaV={totalDeltaV}
+            setTotalDeltaV={setTotalDeltaV}
+            stageCount={stages.length}
+            setStageCount={setStageCount}
+          />
+          <StagesInput stages={stages} updateStage={updateStage} />
         </div>
       </main>
-
       <Footer />
-    </div>
+    </>
   );
 }
 
