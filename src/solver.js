@@ -204,13 +204,7 @@ export function optimize(payload, totalDeltaV, stages, minContribution = 0) {
     throw new Error('Solver failed to converge');
   }
 
-  const { stages: result, totalMass } = computeStageMasses(
-    minDv > 0 ? dvs : dvs,
-    isps,
-    pmfs,
-    sfs,
-    payload
-  );
+  const { stages: result, totalMass } = computeStageMasses(dvs, isps, pmfs, sfs, payload);
 
   return { payload, totalDeltaV, stages: result, totalMass };
 }

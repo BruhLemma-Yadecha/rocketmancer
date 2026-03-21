@@ -38,6 +38,14 @@ npm install
 npm run dev
 ```
 
+## References
+
+The solver's formulation draws from the following:
+
+- J.W. Cornelisse, H.F.R. Schoyer & K.F. Wakker, *Rocket Propulsion and Spaceflight Dynamics* (1979) — mass ratio decomposition, structural coefficient definitions, and Lagrange multiplier formulation for optimal staging
+- [NASA Glenn Research Center — Mass Ratios](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/mass-ratios/) — reference for stage mass ratio, structural coefficient, and payload ratio relationships
+- J. Nocedal & S.J. Wright, *Numerical Optimization*, 2nd ed. (2006) — active-set methods for inequality-constrained convex problems (ch. 16), KKT conditions and dual variable interpretation
+
 ## License
 
 [MIT](LICENSE)
