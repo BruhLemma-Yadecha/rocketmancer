@@ -1,60 +1,12 @@
-# Environment variables
+# Environment
 .env
-.env.local
-.env.development
-.env.production
+.env.*
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-.ruff*
-
-# Virtual environments
-.venv/
-venv/
-ENV/
-env/
-env.bak/
-venv.bak/
-
-# Django
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-media/
-staticfiles/
-
-# Node.js
+# Dependencies
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.npm
-.eslintcache
 
-# Frontend build
-frontend/dist/
-frontend/build/
+# Build output
+dist/
 
 # IDE
 .vscode/
@@ -64,33 +16,13 @@ frontend/build/
 *.swo
 *~
 
-# Code analysis and formatting caches
-.mypy_cache/
-.ruff_cache/
-
 # OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
 # Testing
-.coverage
-.pytest_cache/
-htmlcov/
-.nyc_output/
 coverage/
+.nyc_output/
 
 # Logs
-logs/
 *.log
-
-# Docker
-.dockerignore
-
-# Documentation builds
-docs/_build/
-site/
