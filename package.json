@@ -13,7 +13,8 @@
     "test": "vitest --run",
     "test:coverage": "vitest --run --coverage",
     "format": "prettier --write \"src/**/*.{js,jsx,css}\"",
-    "format:check": "prettier --check \"src/**/*.{js,jsx,css}\""
+    "format:check": "prettier --check \"src/**/*.{js,jsx,css}\"",
+    "prepare": "git config core.hooksPath .hooks"
   },
   "dependencies": {
     "react": "^18.3.1",
