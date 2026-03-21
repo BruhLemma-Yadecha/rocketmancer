@@ -25,9 +25,7 @@ export default function StagesInput({ stages, updateStage }) {
                   min="0"
                   step="0.01"
                   value={stage.specificImpulse}
-                  onChange={(e) =>
-                    updateStage(i, 'specificImpulse', parseFloat(e.target.value) || 0)
-                  }
+                  onChange={e => updateStage(i, 'specificImpulse', parseFloat(e.target.value) || 0)}
                 />
               </td>
               <td>
@@ -37,7 +35,7 @@ export default function StagesInput({ stages, updateStage }) {
                   max="1"
                   step="0.01"
                   value={stage.propellantMassFraction}
-                  onChange={(e) =>
+                  onChange={e =>
                     updateStage(i, 'propellantMassFraction', parseFloat(e.target.value) || 0)
                   }
                 />

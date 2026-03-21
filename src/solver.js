@@ -6,9 +6,9 @@ const G0 = 9.80665;
 // MR_i = (1 - 1/(λ·Isp_i·g₀)) / s_i per stage, so the full
 // solve reduces to bisecting on λ until Σ Δv_i = Δv_total.
 export function optimize(payload, totalDeltaV, stages) {
-  const isps = stages.map((s) => s.specificImpulse);
-  const pmfs = stages.map((s) => s.propellantMassFraction);
-  const sfs = pmfs.map((pmf) => 1 - pmf);
+  const isps = stages.map(s => s.specificImpulse);
+  const pmfs = stages.map(s => s.propellantMassFraction);
+  const sfs = pmfs.map(pmf => 1 - pmf);
 
   function splitForLambda(lambda) {
     return isps.map((isp, i) => {
@@ -28,7 +28,10 @@ export function optimize(payload, totalDeltaV, stages) {
   for (let i = 0; i < 200; i++) {
     const mid = (lo + hi) / 2;
     const sum = dvSum(mid);
-    if (Math.abs(sum - totalDeltaV) < 1e-10) { lo = mid; break; }
+    if (Math.abs(sum - totalDeltaV) < 1e-10) {
+      lo = mid;
+      break;
+    }
     if (sum < totalDeltaV) lo = mid;
     else hi = mid;
   }
@@ -39,7 +42,7 @@ export function optimize(payload, totalDeltaV, stages) {
 
   for (let i = stages.length - 1; i >= 0; i--) {
     const mr = Math.exp(dvs[i] / (isps[i] * G0));
-    const wetMass = dvs[i] > 1e-6 ? carry * (mr - 1) / (1 - mr * sfs[i]) : 0;
+    const wetMass = dvs[i] > 1e-6 ? (carry * (mr - 1)) / (1 - mr * sfs[i]) : 0;
     const propellantMass = pmfs[i] * wetMass;
 
     result[i] = {

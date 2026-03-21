@@ -10,9 +10,9 @@ const PROPERTIES = [
 ];
 
 const STATS = [
-  { label: '\u0394v', value: (r) => r.totalDeltaV.toFixed(0), unit: 'm/s' },
-  { label: 'Payload', value: (r) => r.payload.toFixed(0), unit: 'kg' },
-  { label: 'Total Mass', value: (r) => r.totalMass.toFixed(2), unit: 'kg' },
+  { label: '\u0394v', value: r => r.totalDeltaV.toFixed(0), unit: 'm/s' },
+  { label: 'Payload', value: r => r.payload.toFixed(0), unit: 'kg' },
+  { label: 'Total Mass', value: r => r.totalMass.toFixed(2), unit: 'kg' },
 ];
 
 export default function Results({ result, name }) {
@@ -54,7 +54,7 @@ export default function Results({ result, name }) {
                   <td>
                     <span className={`stage-badge bg-${color(i)}`}>{i + 1}</span>
                   </td>
-                  {PROPERTIES.map((prop) => (
+                  {PROPERTIES.map(prop => (
                     <td key={prop.key}>
                       <span className="value-pill">{fmt(stage[prop.key])}</span>
                     </td>

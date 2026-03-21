@@ -22,9 +22,7 @@ describe('optimize', () => {
   });
 
   it('single stage gets all the delta-v', () => {
-    const result = optimize(500, 3000, [
-      { specificImpulse: 350, propellantMassFraction: 0.9 },
-    ]);
+    const result = optimize(500, 3000, [{ specificImpulse: 350, propellantMassFraction: 0.9 }]);
 
     expect(result.stages).toHaveLength(1);
     expect(result.stages[0].deltaV).toBeCloseTo(3000, 2);
@@ -45,7 +43,7 @@ describe('optimize', () => {
     const result = optimize(800, 6000, [
       { specificImpulse: 300, propellantMassFraction: 0.85 },
       { specificImpulse: 350, propellantMassFraction: 0.88 },
-      { specificImpulse: 400, propellantMassFraction: 0.90 },
+      { specificImpulse: 400, propellantMassFraction: 0.9 },
     ]);
 
     const stagesMass = result.stages.reduce((sum, s) => sum + s.totalMass, 0);

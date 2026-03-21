@@ -7,7 +7,16 @@ const PARAMS = [
   { label: 'Payload (kg)', key: 'payload', type: 'number', min: 0, step: 0.01 },
 ];
 
-export default function Parameters({ name, setName, payload, setPayload, totalDeltaV, setTotalDeltaV, stageCount, setStageCount }) {
+export default function Parameters({
+  name,
+  setName,
+  payload,
+  setPayload,
+  totalDeltaV,
+  setTotalDeltaV,
+  stageCount,
+  setStageCount,
+}) {
   const values = { name, stageCount, totalDeltaV, payload };
   const setters = {
     name: setName,
@@ -30,8 +39,10 @@ export default function Parameters({ name, setName, payload, setPayload, totalDe
               max={param.max}
               step={param.step}
               value={values[param.key]}
-              onChange={(e) =>
-                setters[param.key](param.type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value)
+              onChange={e =>
+                setters[param.key](
+                  param.type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value
+                )
               }
             />
           </div>

@@ -28,7 +28,7 @@ function App() {
     if (payload <= 0 || totalDeltaV <= 0) return;
     if (
       stages.some(
-        (s) =>
+        s =>
           s.specificImpulse <= 0 || s.propellantMassFraction <= 0 || s.propellantMassFraction >= 1
       )
     )
@@ -50,7 +50,7 @@ function App() {
     setStages(stages.map((s, i) => (i === index ? { ...s, [field]: value } : s)));
   };
 
-  const setStageCount = (count) => {
+  const setStageCount = count => {
     count = Math.max(1, Math.min(10, parseInt(count) || 1));
     if (count < stages.length) {
       setStages(stages.slice(0, count));
