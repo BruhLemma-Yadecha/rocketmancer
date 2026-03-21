@@ -1,10 +1,11 @@
 import { color } from '../palette';
+import FormattedInput from './FormattedInput';
 
 const PARAMS = [
   { label: 'Name', key: 'name', type: 'text' },
-  { label: 'Stages', key: 'stageCount', type: 'number', min: 1, max: 10, step: 1 },
-  { label: '\u0394v (m/s)', key: 'totalDeltaV', type: 'number', min: 0, step: 0.01 },
-  { label: 'Payload (kg)', key: 'payload', type: 'number', min: 0, step: 0.01 },
+  { label: 'Stages', key: 'stageCount', type: 'number', min: 1, max: 10, step: 1, decimals: 0 },
+  { label: '\u0394v (m/s)', key: 'totalDeltaV', type: 'number', min: 0, step: 0.01, decimals: 2 },
+  { label: 'Payload (kg)', key: 'payload', type: 'number', min: 0, step: 0.01, decimals: 2 },
 ];
 
 export default function Parameters({
@@ -33,18 +34,22 @@ export default function Parameters({
         {PARAMS.map((param, i) => (
           <div className="param-cell" key={param.key}>
             <label className={`color-${color(i)}`}>{param.label}</label>
-            <input
-              type={param.type}
-              min={param.min}
-              max={param.max}
-              step={param.step}
-              value={values[param.key]}
-              onChange={e =>
-                setters[param.key](
-                  param.type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value
-                )
-              }
-            />
+            {param.type === 'text' ? (
+              <input
+                type="text"
+                value={values[param.key]}
+                onChange={e => setters[param.key](e.target.value)}
+              />
+            ) : (
+              <FormattedInput
+                min={param.min}
+                max={param.max}
+                step={param.step}
+                decimals={param.decimals}
+                value={values[param.key]}
+                onChange={setters[param.key]}
+              />
+            )}
           </div>
         ))}
       </div>
