@@ -2,6 +2,7 @@
   "name": "rocketmancer",
   "private": true,
   "version": "1.0.0",
+  "description": "Multi-stage rocket delta-v optimizer",
   "type": "module",
   "scripts": {
     "dev": "vite",
