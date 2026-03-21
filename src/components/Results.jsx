@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState, useCallback } from 'react';
 import { color, fmt } from '../palette';
 
 const PROPERTIES = [
@@ -15,7 +16,49 @@ const STATS = [
   { label: 'Total Mass', value: r => fmt(r.totalMass, 2), unit: 'kg' },
 ];
 
+function CopyPill({ value, formatted }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleClick = useCallback(() => {
+    navigator.clipboard.writeText(String(value)).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1000);
+    });
+  }, [value]);
+
+  return (
+    <span
+      className={`value-pill copyable${copied ? ' copied' : ''}`}
+      onClick={handleClick}
+      title="Click to copy"
+    >
+      {copied ? 'Copied' : formatted}
+    </span>
+  );
+}
+
 export default function Results({ result, name }) {
+  const tableRef = useRef(null);
+
+  useEffect(() => {
+    if (!tableRef.current) return;
+    const pills = tableRef.current.querySelectorAll('.value-pill');
+    pills.forEach(p => (p.style.minWidth = ''));
+
+    const cols = PROPERTIES.length;
+    for (let c = 0; c < cols; c++) {
+      let max = 0;
+      for (let r = 0; r < result?.stages.length; r++) {
+        const pill = pills[r * cols + c];
+        if (pill) max = Math.max(max, pill.scrollWidth);
+      }
+      for (let r = 0; r < result?.stages.length; r++) {
+        const pill = pills[r * cols + c];
+        if (pill) pill.style.minWidth = `${max}px`;
+      }
+    }
+  }, [result]);
+
   return (
     <div className="card fade-in results-card">
       <div className="card-title">Results</div>
@@ -36,7 +79,7 @@ export default function Results({ result, name }) {
             </div>
           </div>
 
-          <table>
+          <table ref={tableRef}>
             <thead>
               <tr>
                 <th className="color-dim">Stage</th>
@@ -56,7 +99,10 @@ export default function Results({ result, name }) {
                   </td>
                   {PROPERTIES.map(prop => (
                     <td key={prop.key}>
-                      <span className="value-pill">{fmt(stage[prop.key], prop.decimals)}</span>
+                      <CopyPill
+                        value={stage[prop.key]}
+                        formatted={fmt(stage[prop.key], prop.decimals)}
+                      />
                     </td>
                   ))}
                 </tr>

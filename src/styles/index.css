@@ -14,7 +14,7 @@
 
   --glass-bg: rgba(255, 255, 255, 0.08);
   --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-hover: rgba(255, 255, 255, 0.12);
+  --glass-hover: rgba(255, 255, 255, 0.09);
 
   --text: #ffffff;
   --text-muted: rgba(255, 255, 255, 0.6);
@@ -276,11 +276,25 @@ tr:hover {
 .value-pill {
   display: inline-block;
   padding: 0.15rem 0.5rem;
-  border-radius: 999px;
+  border-radius: 0.25rem;
+  font-variant-numeric: tabular-nums;
   font-size: 0.75rem;
   font-weight: 500;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.value-pill.copyable {
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.value-pill.copyable:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.value-pill.copied {
+  color: var(--green);
 }
 
 /* Stats bar */
