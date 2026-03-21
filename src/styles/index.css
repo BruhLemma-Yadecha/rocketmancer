@@ -398,6 +398,16 @@ tr:hover {
   margin-left: 0.25rem;
 }
 
+.results-empty {
+  text-align: center;
+  padding: 4rem 0;
+  color: var(--text-muted);
+}
+
+.results-error {
+  color: var(--red);
+}
+
 /* Result header */
 .result-header {
   display: flex;

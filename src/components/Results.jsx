@@ -37,7 +37,7 @@ function CopyPill({ value, formatted }) {
   );
 }
 
-export default function Results({ result, name }) {
+export default function Results({ result, error, name }) {
   const tableRef = useRef(null);
 
   useEffect(() => {
@@ -111,8 +111,12 @@ export default function Results({ result, name }) {
           </table>
         </>
       ) : (
-        <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-muted)' }}>
-          Enter valid parameters to see results
+        <div className="results-empty">
+          {error ? (
+            <span className="results-error">{error}</span>
+          ) : (
+            'Enter valid parameters to see results'
+          )}
         </div>
       )}
     </div>

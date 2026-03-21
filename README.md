@@ -19,7 +19,7 @@
 
 ## Background
 
-rocketmancer is a multi-stage rocket delta-v optimizer based on the [original rocketmancer](https://github.com/BruhLemma-Yadecha/rocketmancer) and its predecessor, [multistage](https://github.com/BruhLemma-Yadecha/multistage). It takes trip and vehicle parameters and finds the delta-v split across stages that minimizes total vehicle mass.
+rocketmancer is a multi-stage rocket delta-v optimizer based on the [original rocketmancer](https://github.com/BruhLemma-Yadecha/rocketmancer-cpp) and its predecessor, [multistage](https://github.com/BruhLemma-Yadecha/multistage). It takes trip and vehicle parameters and finds the delta-v split across stages that minimizes total vehicle mass.
 
 The primary goal was to fix the usability issues of those legacy projects by providing a proper web interface. The solver itself was also reworked: rather than using a general-purpose constrained optimizer, the problem is solved analytically via Lagrange multipliers, reducing the full optimization to a simple bisection on a single scalar.
 

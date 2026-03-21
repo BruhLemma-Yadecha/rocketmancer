@@ -24,23 +24,17 @@ function App() {
   const [totalDeltaV, setTotalDeltaV] = useState(DEFAULTS.totalDeltaV);
   const [stages, setStages] = useState(DEFAULTS.stages);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
   const [minContribution, setMinContribution] = useState(0);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const runOptimizer = useCallback(() => {
-    if (payload <= 0 || totalDeltaV <= 0) return;
-    if (
-      stages.some(
-        s =>
-          s.specificImpulse <= 0 || s.propellantMassFraction <= 0 || s.propellantMassFraction >= 1
-      )
-    )
-      return;
-
     try {
       setResult(optimize(payload, totalDeltaV, stages, minContribution));
-    } catch {
+      setError(null);
+    } catch (e) {
       setResult(null);
+      setError(e.message);
     }
   }, [payload, totalDeltaV, stages, minContribution]);
 
@@ -71,7 +65,7 @@ function App() {
       <Header />
       <main className="container">
         <div className="layout">
-          <Results result={result} name={name} />
+          <Results result={result} error={error} name={name} />
           <Parameters
             name={name}
             setName={setName}
