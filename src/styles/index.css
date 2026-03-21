@@ -54,14 +54,15 @@ body {
 /* Layout */
 
 .container {
-  max-width: 80rem;
+  width: 100%;
+  max-width: 64rem;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
 .layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 1rem;
   padding: 1rem 0;
 }
@@ -79,6 +80,7 @@ body {
   border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   padding: 1.25rem;
+  min-width: 0;
   transition:
     background var(--transition),
     transform var(--transition);
@@ -420,6 +422,81 @@ tr:hover {
 
 .fade-in {
   animation: fadeIn 0.4s ease-out;
+}
+
+/* Settings */
+
+.settings-toggle {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background var(--transition),
+    color var(--transition);
+}
+
+.settings-toggle:hover {
+  background: var(--glass-hover);
+  color: var(--text);
+}
+
+.settings-card {
+  grid-column: 1 / -1;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.setting-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+}
+
+.setting-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.setting-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.setting-input {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.setting-input input {
+  width: 4rem;
+  text-align: center;
+}
+
+.setting-unit {
+  font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
 /* Responsive */

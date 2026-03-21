@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Parameters from './components/Parameters';
 import StagesInput from './components/StagesInput';
+import { SettingsToggle, SettingsPanel } from './components/Settings';
 import Results from './components/Results';
 import './styles/index.css';
 
@@ -23,6 +24,8 @@ function App() {
   const [totalDeltaV, setTotalDeltaV] = useState(DEFAULTS.totalDeltaV);
   const [stages, setStages] = useState(DEFAULTS.stages);
   const [result, setResult] = useState(null);
+  const [minContribution, setMinContribution] = useState(0);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const runOptimizer = useCallback(() => {
     if (payload <= 0 || totalDeltaV <= 0) return;
@@ -35,11 +38,11 @@ function App() {
       return;
 
     try {
-      setResult(optimize(payload, totalDeltaV, stages));
+      setResult(optimize(payload, totalDeltaV, stages, minContribution));
     } catch {
       setResult(null);
     }
-  }, [payload, totalDeltaV, stages]);
+  }, [payload, totalDeltaV, stages, minContribution]);
 
   useEffect(() => {
     const t = setTimeout(runOptimizer, 300);
@@ -80,9 +83,17 @@ function App() {
             setStageCount={setStageCount}
           />
           <StagesInput stages={stages} updateStage={updateStage} />
+          {settingsOpen && (
+            <SettingsPanel
+              minContribution={minContribution}
+              setMinContribution={setMinContribution}
+              stageCount={stages.length}
+            />
+          )}
         </div>
       </main>
       <Footer />
+      <SettingsToggle open={settingsOpen} setOpen={setSettingsOpen} />
     </>
   );
 }
