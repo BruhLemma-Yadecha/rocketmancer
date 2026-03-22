@@ -4,16 +4,17 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Parameters from './components/Parameters';
 import StagesInput from './components/StagesInput';
+import { SettingsToggle, SettingsPanel } from './components/Settings';
 import Results from './components/Results';
 import './styles/index.css';
 
 const DEFAULTS = {
-  name: 'Billy Jean',
-  totalDeltaV: 4760.08,
-  payload: 1000,
+  name: 'Falcon 9 Block 5 (exp.)',
+  totalDeltaV: 9400,
+  payload: 22800,
   stages: [
-    { specificImpulse: 307.36, propellantMassFraction: 0.83 },
-    { specificImpulse: 348.81, propellantMassFraction: 0.87 },
+    { specificImpulse: 312, propellantMassFraction: 0.947 },
+    { specificImpulse: 348, propellantMassFraction: 0.96 },
   ],
 };
 
@@ -23,23 +24,19 @@ function App() {
   const [totalDeltaV, setTotalDeltaV] = useState(DEFAULTS.totalDeltaV);
   const [stages, setStages] = useState(DEFAULTS.stages);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
+  const [minContribution, setMinContribution] = useState(0);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const runOptimizer = useCallback(() => {
-    if (payload <= 0 || totalDeltaV <= 0) return;
-    if (
-      stages.some(
-        s =>
-          s.specificImpulse <= 0 || s.propellantMassFraction <= 0 || s.propellantMassFraction >= 1
-      )
-    )
-      return;
-
     try {
-      setResult(optimize(payload, totalDeltaV, stages));
-    } catch {
+      setResult(optimize(payload, totalDeltaV, stages, minContribution));
+      setError(null);
+    } catch (e) {
       setResult(null);
+      setError(e.message);
     }
-  }, [payload, totalDeltaV, stages]);
+  }, [payload, totalDeltaV, stages, minContribution]);
 
   useEffect(() => {
     const t = setTimeout(runOptimizer, 300);
@@ -68,7 +65,7 @@ function App() {
       <Header />
       <main className="container">
         <div className="layout">
-          <Results result={result} name={name} />
+          <Results result={result} error={error} name={name} />
           <Parameters
             name={name}
             setName={setName}
@@ -80,9 +77,17 @@ function App() {
             setStageCount={setStageCount}
           />
           <StagesInput stages={stages} updateStage={updateStage} />
+          {settingsOpen && (
+            <SettingsPanel
+              minContribution={minContribution}
+              setMinContribution={setMinContribution}
+              stageCount={stages.length}
+            />
+          )}
         </div>
       </main>
       <Footer />
+      <SettingsToggle open={settingsOpen} setOpen={setSettingsOpen} />
     </>
   );
 }

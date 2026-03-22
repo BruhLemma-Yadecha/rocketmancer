@@ -1,4 +1,5 @@
 import { color } from '../palette';
+import FormattedInput from './FormattedInput';
 
 export default function StagesInput({ stages, updateStage }) {
   return (
@@ -20,24 +21,22 @@ export default function StagesInput({ stages, updateStage }) {
                 <span className={`stage-badge bg-${color(i)}`}>{i + 1}</span>
               </td>
               <td>
-                <input
-                  type="number"
+                <FormattedInput
                   min="0"
                   step="0.01"
+                  decimals={2}
                   value={stage.specificImpulse}
-                  onChange={e => updateStage(i, 'specificImpulse', parseFloat(e.target.value) || 0)}
+                  onChange={v => updateStage(i, 'specificImpulse', v)}
                 />
               </td>
               <td>
-                <input
-                  type="number"
+                <FormattedInput
                   min="0"
                   max="1"
                   step="0.01"
+                  decimals={3}
                   value={stage.propellantMassFraction}
-                  onChange={e =>
-                    updateStage(i, 'propellantMassFraction', parseFloat(e.target.value) || 0)
-                  }
+                  onChange={v => updateStage(i, 'propellantMassFraction', v)}
                 />
               </td>
             </tr>

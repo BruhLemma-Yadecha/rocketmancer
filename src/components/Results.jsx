@@ -1,21 +1,64 @@
+import { useRef, useEffect, useState, useCallback } from 'react';
 import { color, fmt } from '../palette';
 
 const PROPERTIES = [
-  { name: '\u0394v', key: 'deltaV', unit: 'm/s' },
-  { name: 'Mass Ratio', key: 'massRatio', unit: null },
-  { name: 'Payload Mass', key: 'payloadMass', unit: 'kg' },
-  { name: 'Wet Mass', key: 'totalMass', unit: 'kg' },
-  { name: 'Dry Mass', key: 'structuralMass', unit: 'kg' },
-  { name: 'Propellant Mass', key: 'propellantMass', unit: 'kg' },
+  { name: '\u0394v', key: 'deltaV', unit: 'm/s', decimals: 2 },
+  { name: 'Mass Ratio', key: 'massRatio', unit: null, decimals: 4 },
+  { name: 'Payload Mass', key: 'payloadMass', unit: 'kg', decimals: 2 },
+  { name: 'Wet Mass', key: 'totalMass', unit: 'kg', decimals: 2 },
+  { name: 'Dry Mass', key: 'structuralMass', unit: 'kg', decimals: 2 },
+  { name: 'Propellant Mass', key: 'propellantMass', unit: 'kg', decimals: 2 },
 ];
 
 const STATS = [
-  { label: '\u0394v', value: r => r.totalDeltaV.toFixed(0), unit: 'm/s' },
-  { label: 'Payload', value: r => r.payload.toFixed(0), unit: 'kg' },
-  { label: 'Total Mass', value: r => r.totalMass.toFixed(2), unit: 'kg' },
+  { label: '\u0394v', value: r => fmt(r.totalDeltaV, 0), unit: 'm/s' },
+  { label: 'Payload', value: r => fmt(r.payload, 0), unit: 'kg' },
+  { label: 'Total Mass', value: r => fmt(r.totalMass, 2), unit: 'kg' },
 ];
 
-export default function Results({ result, name }) {
+function CopyPill({ value, formatted }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleClick = useCallback(() => {
+    navigator.clipboard.writeText(String(value)).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1000);
+    });
+  }, [value]);
+
+  return (
+    <span
+      className={`value-pill copyable${copied ? ' copied' : ''}`}
+      onClick={handleClick}
+      title="Click to copy"
+    >
+      {copied ? 'Copied' : formatted}
+    </span>
+  );
+}
+
+export default function Results({ result, error, name }) {
+  const tableRef = useRef(null);
+
+  useEffect(() => {
+    if (!tableRef.current) return;
+    const pills = tableRef.current.querySelectorAll('.value-pill');
+    pills.forEach(p => (p.style.minWidth = ''));
+
+    const cols = PROPERTIES.length;
+    for (let c = 0; c < cols; c++) {
+      let max = 0;
+      for (let r = 0; r < result?.stages.length; r++) {
+        const pill = pills[r * cols + c];
+        if (pill) max = Math.max(max, pill.scrollWidth);
+      }
+      for (let r = 0; r < result?.stages.length; r++) {
+        const pill = pills[r * cols + c];
+        if (pill) pill.style.minWidth = `${max}px`;
+      }
+    }
+  }, [result]);
+
   return (
     <div className="card fade-in results-card">
       <div className="card-title">Results</div>
@@ -36,7 +79,7 @@ export default function Results({ result, name }) {
             </div>
           </div>
 
-          <table>
+          <table ref={tableRef}>
             <thead>
               <tr>
                 <th className="color-dim">Stage</th>
@@ -56,7 +99,10 @@ export default function Results({ result, name }) {
                   </td>
                   {PROPERTIES.map(prop => (
                     <td key={prop.key}>
-                      <span className="value-pill">{fmt(stage[prop.key])}</span>
+                      <CopyPill
+                        value={stage[prop.key]}
+                        formatted={fmt(stage[prop.key], prop.decimals)}
+                      />
                     </td>
                   ))}
                 </tr>
@@ -65,8 +111,12 @@ export default function Results({ result, name }) {
           </table>
         </>
       ) : (
-        <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-muted)' }}>
-          Enter valid parameters to see results
+        <div className="results-empty">
+          {error ? (
+            <span className="results-error">{error}</span>
+          ) : (
+            'Enter valid parameters to see results'
+          )}
         </div>
       )}
     </div>

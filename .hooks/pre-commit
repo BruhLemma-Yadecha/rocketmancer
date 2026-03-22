@@ -1,0 +1,18 @@
+#!/bin/sh
+
+echo "Running lint..."
+npm run lint 2>&1
+LINT_EXIT=$?
+
+echo "Checking formatting..."
+npm run format:check 2>&1
+FORMAT_EXIT=$?
+
+echo "Running tests..."
+npm test 2>&1
+TEST_EXIT=$?
+
+if [ $LINT_EXIT -ne 0 ] || [ $FORMAT_EXIT -ne 0 ] || [ $TEST_EXIT -ne 0 ]; then
+  echo "\nPre-commit checks failed. Fix issues before committing."
+  exit 1
+fi
