@@ -1,4 +1,4 @@
-const GITHUB_URL = 'https://github.com/BruhLemma-Yadecha/rocketmancer-web';
+const GITHUB_URL = 'https://github.com/BruhLemma-Yadecha/rocketmancer';
 
 export default function Footer() {
   return (

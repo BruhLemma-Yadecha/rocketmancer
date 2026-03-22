@@ -5,7 +5,7 @@
 # rocketmancer
 
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat)
-![CI](https://img.shields.io/github/actions/workflow/status/BruhLemma-Yadecha/rocketmancer-web/pr-checks.yml?branch=main&style=flat&label=CI)
+![CI](https://img.shields.io/github/actions/workflow/status/BruhLemma-Yadecha/rocketmancer/pr-checks.yml?branch=main&style=flat&label=CI)
 ![React](https://img.shields.io/badge/React-18+-61DAFB?style=flat&logo=react&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=flat&logo=vite&logoColor=white)
 
@@ -28,8 +28,8 @@ The backbone is the [Tsiolkovsky Rocket Equation](https://en.wikipedia.org/wiki/
 ## Quick Start
 
 ```bash
-git clone https://github.com/BruhLemma-Yadecha/rocketmancer-web.git
-cd rocketmancer-web
+git clone https://github.com/BruhLemma-Yadecha/rocketmancer.git
+cd rocketmancer
 npm install
 npm run dev
 ```
